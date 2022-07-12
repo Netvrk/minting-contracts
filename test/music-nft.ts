@@ -4,7 +4,7 @@ import { keccak256 } from "ethers/lib/utils";
 import { ethers, upgrades } from "hardhat";
 import { MerkleTree } from "merkletreejs";
 
-describe("NFT World Staking & Rental", function () {
+describe("Music NFT minting", function () {
   let musicNft: Contract;
   let owner: Signer;
   let user: Signer;
