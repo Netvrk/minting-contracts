@@ -1,14 +1,3 @@
-/*
-=====================================================
-███╗   ██╗███████╗████████╗██╗   ██╗██████╗ ██╗  ██╗
-████╗  ██║██╔════╝╚══██╔══╝██║   ██║██╔══██╗██║ ██╔╝
-██╔██╗ ██║█████╗     ██║   ██║   ██║██████╔╝█████╔╝ 
-██║╚██╗██║██╔══╝     ██║   ╚██╗ ██╔╝██╔══██╗██╔═██╗ 
-██║ ╚████║███████╗   ██║    ╚████╔╝ ██║  ██║██║  ██╗
-╚═╝  ╚═══╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝
-=====================================================
-*/
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.11;
 
@@ -36,7 +25,9 @@ contract MusicNFT is
     uint256 internal _totalRevenue;
     bytes32 private _merkleRoot;
     string private _tokenBaseURI;
+
     bool private _presaleActive;
+    bool private _saleActive;
 
     // Sales Parameters
     uint256 private _maxAmount;
@@ -44,26 +35,45 @@ contract MusicNFT is
     uint256 private _maxPerWallet;
     uint256 private _startIndex;
     uint256 private _price;
+    uint256 private _presaleStart;
+    uint256 private _presaleEnd;
 
     mapping(address => uint256) private _mintCount;
 
-    modifier onlyMintable() {
+    modifier onlyPresaleMintable() {
+        require(_merkleRoot != "", "MERKLE_ROOT_NOT_SET");
+        require(_presaleActive, "PRESALE_NOT_ACTIVE");
+        require(_presaleStart < block.timestamp, "PRESALE_NOT_STARTED");
+        require(block.timestamp < _presaleEnd, "PRESALE_ENDED");
         require(
             _maxAmount > 0
                 ? totalSupply().add(_musicsInAlbum) <= _maxAmount
                 : true,
             "MAX_PRESALE_EXCEEDED"
         );
-
         require(
             _mintCount[_msgSender()].add(_musicsInAlbum) <= _maxPerWallet,
             "MAX_PER_WALLET_EXCEEDED"
         );
-
         _;
     }
 
-    event MerkleRootSet(bytes32 indexed merkleRoot);
+    modifier onlySaleMintable() {
+        require(_saleActive, "SALE_NOT_ACTIVE");
+        require(
+            _maxAmount > 0
+                ? totalSupply().add(_musicsInAlbum) <= _maxAmount
+                : true,
+            "MAX_SALE_EXCEEDED"
+        );
+        require(
+            _mintCount[_msgSender()].add(_musicsInAlbum) <= _maxPerWallet,
+            "MAX_PER_WALLET_EXCEEDED"
+        );
+        _;
+    }
+
+    event Minted(uint256 indexed tokenId, address indexed user);
 
     /**
     ////////////////////////////////////////////////////
@@ -86,13 +96,14 @@ contract MusicNFT is
         _tokenBaseURI = baseURI_;
         _treasury = treasury_;
         _presaleActive = false;
+        _saleActive = false;
         _startIndex = 1;
+        _musicsInAlbum = 12;
     }
 
     // Set merkle root
     function setMerkleRoot(bytes32 newRoot) public onlyOwner {
         _merkleRoot = newRoot;
-        emit MerkleRootSet(newRoot);
     }
 
     // Set treasury address
@@ -107,21 +118,39 @@ contract MusicNFT is
 
     // Start presale
     function startPresale(
-        uint256 newMaxAmount,
-        uint256 nexMaxInAlbum,
-        uint256 newMaxPerWallet,
-        uint256 newPrice
+        uint256 maxAlbums,
+        uint256 maxAlbumsPerWallet,
+        uint256 newPrice,
+        uint256 presaleStartDate,
+        uint256 presaleEndDate
     ) public onlyOwner {
-        _maxAmount = newMaxAmount;
-        _musicsInAlbum = nexMaxInAlbum;
-        _maxPerWallet = newMaxPerWallet;
+        require(presaleStartDate < presaleEndDate, "PRESALE_START_AFTER_END");
+        require(presaleStartDate > block.timestamp, "PRESALE_START_IN_PAST");
+
+        _maxAmount = maxAlbums.mul(_musicsInAlbum);
+        _maxPerWallet = maxAlbumsPerWallet.mul(_musicsInAlbum);
         _price = newPrice;
+        _presaleStart = presaleStartDate;
+        _presaleEnd = presaleEndDate;
         _presaleActive = true;
+        _saleActive = false;
     }
 
-    // Stop presale
-    function stopPresale() public onlyOwner {
+    // Start sale
+    function startSale(
+        uint256 maxAlbums,
+        uint256 maxAlbumsPerWallet,
+        uint256 newPrice
+    ) public onlyOwner {
+        _maxAmount = _maxAmount.add(maxAlbums.mul(_musicsInAlbum));
+        _maxPerWallet = maxAlbumsPerWallet.mul(_musicsInAlbum);
+        _price = newPrice;
         _presaleActive = false;
+        _saleActive = true;
+    }
+
+    function stopSale() public onlyOwner {
+        _saleActive = false;
     }
 
     // withdraw all incomes
@@ -137,10 +166,12 @@ contract MusicNFT is
     ///////////////////////////////////////////////////
     */
 
-    // Mint album
-    function mintAlbum(bytes32[] calldata proof) public payable onlyMintable {
-        require(_merkleRoot != "", "MERKLE_ROOT_NOT_SET");
-        require(_presaleActive, "PRESALE_NOT_ACTIVE");
+    // Mint album in presale
+    function presaleMint(bytes32[] calldata proof)
+        public
+        payable
+        onlyPresaleMintable
+    {
         require(
             MerkleProofUpgradeable.verify(
                 proof,
@@ -149,7 +180,12 @@ contract MusicNFT is
             ),
             "NOT_WHITELISTED"
         );
-        _presaleMint(_msgSender());
+        _mintAlbum(_msgSender());
+    }
+
+    // mint album in sale
+    function mint() public payable onlySaleMintable {
+        _mintAlbum(_msgSender());
     }
 
     /**
@@ -158,16 +194,16 @@ contract MusicNFT is
     ///////////////////////////////////////////////////
     */
 
-    function maxAmount() external view returns (uint256) {
-        return _maxAmount;
-    }
-
     function musicsInAlbum() external view returns (uint256) {
         return _musicsInAlbum;
     }
 
-    function maxPerWallet() external view returns (uint256) {
-        return _maxPerWallet;
+    function maxAlbumOnSale() external view returns (uint256) {
+        return _maxAmount.div(_musicsInAlbum);
+    }
+
+    function maxAlbumPerWallet() external view returns (uint256) {
+        return _maxPerWallet.div(_musicsInAlbum);
     }
 
     function price() external view returns (uint256) {
@@ -175,14 +211,33 @@ contract MusicNFT is
     }
 
     function presaleActive() external view returns (bool) {
-        return _presaleActive;
+        return
+            _presaleActive &&
+            _presaleStart < block.timestamp &&
+            _presaleEnd > block.timestamp;
     }
 
-    function mintCount(address user) external view returns (uint256) {
+    function saleActive() external view returns (bool) {
+        return _saleActive;
+    }
+
+    function presaleStart() external view returns (uint256) {
+        return _presaleStart;
+    }
+
+    function presaleEnd() external view returns (uint256) {
+        return _presaleEnd;
+    }
+
+    function musicMinted(address user) external view returns (uint256) {
         return _mintCount[user];
     }
 
-    function albumsMinted() public view returns (uint256) {
+    function albumMinted(address user) external view returns (uint256) {
+        return _mintCount[user].div(_musicsInAlbum);
+    }
+
+    function totalAlbumMinted() public view returns (uint256) {
         return _startIndex.div(_musicsInAlbum);
     }
 
@@ -200,7 +255,7 @@ contract MusicNFT is
     ///////////////////////////////////////////////////
     */
 
-    function _presaleMint(address sender) internal {
+    function _mintAlbum(address sender) internal {
         require(_price <= msg.value, "INCORRECT_PRICE");
         _totalRevenue = _totalRevenue.add(msg.value);
         _mintCount[sender] = _mintCount[sender].add(_musicsInAlbum);
@@ -214,6 +269,7 @@ contract MusicNFT is
             idx++
         ) {
             _safeMint(sender, idx);
+            emit Minted(idx, sender);
         }
         _startIndex = _startIndex.add(_musicsInAlbum);
     }

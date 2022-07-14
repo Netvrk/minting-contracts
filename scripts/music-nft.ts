@@ -9,9 +9,10 @@ async function main() {
   // We get the contract to deploy
   const MusicNFT = await ethers.getContractFactory("MusicNFT");
   const musicNft = await upgrades.deployProxy(MusicNFT, [
-    "DROP",
-    "DROP",
-    "0x486FCe87b3aF20696d9Acc87A1614cC743180986",
+    "MUZIC",
+    "MUZIC",
+    "https://api.example.com/",
+    "0x08c3405ba60f9263Ec18d20959D1c39F9dff4b4b",
   ]);
 
   await musicNft.deployed();
