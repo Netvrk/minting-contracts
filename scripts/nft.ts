@@ -6,20 +6,19 @@
 import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  const nftAddress = "0x0000000000000000000000000000000000000001";
   // We get the contract to deploy
-  const MusicNFT = await ethers.getContractFactory("MusicNFT");
-  const musicNft = await upgrades.deployProxy(MusicNFT, [
-    "MUSIC",
-    "MUSIC",
-    "https://api.example.com/",
-    "0x08c3405ba60f9263Ec18d20959D1c39F9dff4b4b",
-    nftAddress,
-  ]);
+  const NFT = await ethers.getContractFactory("NFT");
+  const nft = await upgrades.deployProxy(
+    NFT,
+    ["AVTR", "AVTR", "https://api.example.com/"],
+    {
+      kind: "uups",
+    }
+  );
 
-  await musicNft.deployed();
+  await nft.deployed();
 
-  console.log("MusicNFT deployed to:", musicNft.address);
+  console.log("NFT deployed to:", nft.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

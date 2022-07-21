@@ -6,6 +6,7 @@ import { MerkleTree } from "merkletreejs";
 
 describe("Music NFT minting", function () {
   let musicNft: Contract;
+  let nft: Contract;
   let owner: Signer;
   let user: Signer;
   let user2: Signer;
@@ -36,11 +37,22 @@ describe("Music NFT minting", function () {
     now = parseInt((new Date().getTime() / 1000).toString());
   });
 
-  it("Deploy Music NFT contract", async function () {
+  it("Deploy Avatar NFT and Music NFT contract", async function () {
+    const NFT = await ethers.getContractFactory("NFT");
+    nft = await upgrades.deployProxy(
+      NFT,
+      ["AVTR", "AVTR", "https://api.example.com/"],
+      {
+        kind: "uups",
+      }
+    );
+
+    await nft.deployed();
+
     const MusicNFT = await ethers.getContractFactory("MusicNFT");
     musicNft = await upgrades.deployProxy(
       MusicNFT,
-      ["DROP", "DROP", "https://api.example.com/", ownerAddress],
+      ["DROP", "DROP", "https://api.example.com/", ownerAddress, nft.address],
       {
         kind: "uups",
       }
@@ -49,10 +61,16 @@ describe("Music NFT minting", function () {
     expect(await musicNft.owner()).to.equal(ownerAddress);
   });
 
+  it("Set minter role in avatar NFT", async function () {
+    const MINTER_ROLE = await nft.MINTER_ROLE();
+    await nft.grantRole(MINTER_ROLE, musicNft.address);
+    expect(await nft.hasRole(MINTER_ROLE, musicNft.address)).to.equal(true);
+  });
+
   it("Set merkel root", async function () {
     const hexProof = tree.getHexProof(keccak256(userAddress));
     await expect(
-      musicNft.connect(user).presaleMint(hexProof, {
+      musicNft.connect(user).presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("MERKLE_ROOT_NOT_SET");
@@ -93,8 +111,8 @@ describe("Music NFT minting", function () {
       endDate
     );
     expect(await musicNft.presaleActive()).to.equal(false);
-    expect((await musicNft.maxAlbumOnSale()).toString()).to.equal("3");
-    expect((await musicNft.maxAlbumPerWallet()).toString()).to.equal("2");
+    expect((await musicNft.maxAlbumsOnSale()).toString()).to.equal("3");
+    expect((await musicNft.maxAlbumsPerWallet()).toString()).to.equal("2");
     expect((await musicNft.price()).toString()).to.equal(
       "10000000000000000000"
     );
@@ -106,7 +124,7 @@ describe("Music NFT minting", function () {
     expect(await musicNft.presaleActive()).to.equal(false);
     const hexProof = tree.getHexProof(keccak256(userAddress));
     await expect(
-      musicNft.connect(user).presaleMint(hexProof, {
+      musicNft.connect(user).presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("PRESALE_NOT_STARTED");
@@ -121,11 +139,11 @@ describe("Music NFT minting", function () {
 
     const hexProof = tree.getHexProof(keccak256(userAddress));
 
-    await musicNft.connect(user).presaleMint(hexProof, {
+    await musicNft.connect(user).presaleMint(1, hexProof, {
       value: ethers.utils.parseEther("10"),
     });
 
-    await musicNft.connect(user).presaleMint(hexProof, {
+    await musicNft.connect(user).presaleMint(1, hexProof, {
       value: ethers.utils.parseEther("10"),
     });
 
@@ -133,18 +151,19 @@ describe("Music NFT minting", function () {
       expect(await musicNft.ownerOf(x)).to.equal(userAddress);
     }
     expect((await musicNft.balanceOf(userAddress)).toString()).to.equal("24");
-    expect((await musicNft.totalAlbumMinted()).toString()).to.equal("2");
+    expect((await musicNft.totalAlbumsMinted()).toString()).to.equal("2");
     expect((await musicNft.totalSupply()).toString()).to.equal("24");
     expect((await musicNft.totalRevenue()).toString()).to.equal(
       "20000000000000000000"
     );
+    expect((await nft.totalSupply()).toString()).to.equal("2");
   });
 
   it("Non whitelisted user cannot mint album", async function () {
     const hexProof = tree.getHexProof(keccak256(user2Address));
 
     await expect(
-      musicNft.connect(user2).presaleMint(hexProof, {
+      musicNft.connect(user2).presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("NOT_WHITELISTED");
@@ -152,7 +171,7 @@ describe("Music NFT minting", function () {
 
   it("User cant mint in public sale while presale is active", async function () {
     await expect(
-      musicNft.connect(user2).mint({
+      musicNft.connect(user2).mint(1, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("SALE_NOT_ACTIVE");
@@ -161,29 +180,29 @@ describe("Music NFT minting", function () {
   it("Whitelisted user cannot mint with wrong price", async function () {
     const hexProof = tree.getHexProof(keccak256(ownerAddress));
     await expect(
-      musicNft.presaleMint(hexProof, {
+      musicNft.presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("9"),
       })
-    ).to.be.revertedWith("INCORRECT_PRICE");
+    ).to.be.revertedWith("LOW_PRICE");
   });
 
   it("Check mint per wallet and presale limit", async function () {
     const hexProof = tree.getHexProof(keccak256(userAddress));
 
     await expect(
-      musicNft.connect(user).presaleMint(hexProof, {
+      musicNft.connect(user).presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("MAX_PER_WALLET_EXCEEDED");
 
     const hexProof2 = tree.getHexProof(keccak256(ownerAddress));
 
-    await musicNft.presaleMint(hexProof2, {
+    await musicNft.presaleMint(1, hexProof2, {
       value: ethers.utils.parseEther("10"),
     });
 
     await expect(
-      musicNft.presaleMint(hexProof2, {
+      musicNft.presaleMint(1, hexProof2, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("MAX_PRESALE_EXCEEDED");
@@ -198,41 +217,47 @@ describe("Music NFT minting", function () {
 
     const hexProof = tree.getHexProof(keccak256(userAddress));
     await expect(
-      musicNft.connect(user).presaleMint(hexProof, {
+      musicNft.connect(user).presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("PRESALE_ENDED");
   });
 
   it("Start sale after one day", async function () {
-    await musicNft.startSale("3", "2", "10000000000000000000");
+    await musicNft.startSale("10", "6", "10000000000000000000");
 
     expect(await musicNft.presaleActive()).to.equal(false);
     expect(await musicNft.saleActive()).to.equal(true);
-    expect((await musicNft.maxAlbumOnSale()).toString()).to.equal("6");
-    expect((await musicNft.maxAlbumPerWallet()).toString()).to.equal("2");
+    expect((await musicNft.maxAlbumsOnSale()).toString()).to.equal("10");
+    expect((await musicNft.maxAlbumsPerWallet()).toString()).to.equal("6");
     expect((await musicNft.price()).toString()).to.equal(
       "10000000000000000000"
     );
   });
 
-  it("Any user can mint album in sale", async function () {
-    await musicNft.connect(user2).mint({
-      value: ethers.utils.parseEther("10"),
+  it("Any user can mint album on sale", async function () {
+    await expect(
+      musicNft.connect(user2).mint(6, {
+        value: ethers.utils.parseEther("60"),
+      })
+    ).to.be.revertedWith("TOO_MANY_ALBUMS");
+
+    await musicNft.connect(user2).mint(5, {
+      value: ethers.utils.parseEther("50"),
     });
 
     const supply = parseInt((await musicNft.totalSupply()).toString());
-    for (let x = supply - 11; x <= supply; x++) {
+    for (let x = supply - 11 - 4 * 12; x <= supply; x++) {
       expect(await musicNft.ownerOf(x)).to.equal(user2Address);
     }
-    expect((await musicNft.balanceOf(user2Address)).toString()).to.equal("12");
-    expect((await musicNft.totalSupply()).toString()).to.equal("48");
+    expect((await musicNft.balanceOf(user2Address)).toString()).to.equal("60");
+    expect((await musicNft.totalSupply()).toString()).to.equal("96");
   });
 
   it("User can't mint after the sale is stopped", async function () {
     await musicNft.stopSale();
     await expect(
-      musicNft.connect(user2).mint({
+      musicNft.connect(user2).mint(1, {
         value: ethers.utils.parseEther("10"),
       })
     ).to.be.revertedWith("SALE_NOT_ACTIVE");
