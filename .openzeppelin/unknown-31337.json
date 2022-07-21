@@ -3,19 +3,19 @@
   "proxies": [
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xe04787f32a3d5d2d64a674e09c0a4c4481dde7316d13dabfd2cd81c233c067b9",
+      "txHash": "0xe349724ba4046307bd8008be2c76a4f22c87f41a60171d36e8817894ff4a43d3",
       "kind": "uups"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xed208a85c21bbf631f0c9d3abbce7113d42d6278e0e865489807a7790b52384d",
+      "txHash": "0x4869f1271245357f65626069baa5788d71a5951fbef5ce851f024921ff10602a",
       "kind": "uups"
     }
   ],
   "impls": {
-    "d7793205c93221144ff3d2808f97f864d47ff72d61ce98e5a421ab44f097d12b": {
+    "a1c8ecbb1dddd0c67fc1843210a1581777f346e6bf2e13c84bb4d4cc8dbd5f96": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0xd15c1ea773f1a0be025b344a0743ecf9b683ba0c8762ad2bdc3c3522574dae70",
+      "txHash": "0xfc545553467ecdb71803eb956c5d00abb2c2e08a60c830e1bca8d72e17d75399",
       "layout": {
         "storage": [
           {
@@ -201,7 +201,7 @@
             "slot": "401",
             "type": "t_struct(Counter)3080_storage",
             "contract": "NFT",
-            "src": "contracts/NFT.sol:20"
+            "src": "contracts/NFT.sol:24"
           },
           {
             "label": "_baseTokenURI",
@@ -209,7 +209,7 @@
             "slot": "402",
             "type": "t_string_storage",
             "contract": "NFT",
-            "src": "contracts/NFT.sol:24"
+            "src": "contracts/NFT.sol:28"
           }
         ],
         "types": {
@@ -318,9 +318,9 @@
         }
       }
     },
-    "bec27e220cfa3ec8ac665384d3a2989887763a75007a4b60800b343e6961d954": {
+    "0f7dba458d08f0f53e322433da76656e5768a753f16dd95e83c7aa1142d26c66": {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x2c3a8cfb0ea95496223dcd617a49a41de9c2bde95ef01c05e1dec8efbe6cbe3e",
+      "txHash": "0xeaf690bd37edee12f2e8e5398cc9aa92efcad25ebfa891b6f8c38118b8baa59e",
       "layout": {
         "storage": [
           {
@@ -490,7 +490,7 @@
             "slot": "351",
             "type": "t_address",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:28"
+            "src": "contracts/MusicNFT.sol:32"
           },
           {
             "label": "_totalRevenue",
@@ -498,7 +498,7 @@
             "slot": "352",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:29"
+            "src": "contracts/MusicNFT.sol:33"
           },
           {
             "label": "_merkleRoot",
@@ -506,7 +506,7 @@
             "slot": "353",
             "type": "t_bytes32",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:30"
+            "src": "contracts/MusicNFT.sol:34"
           },
           {
             "label": "_tokenBaseURI",
@@ -514,7 +514,7 @@
             "slot": "354",
             "type": "t_string_storage",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:31"
+            "src": "contracts/MusicNFT.sol:35"
           },
           {
             "label": "_presaleActive",
@@ -522,7 +522,7 @@
             "slot": "355",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:33"
+            "src": "contracts/MusicNFT.sol:37"
           },
           {
             "label": "_saleActive",
@@ -530,7 +530,7 @@
             "slot": "355",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:34"
+            "src": "contracts/MusicNFT.sol:38"
           },
           {
             "label": "_maxTracks",
@@ -538,7 +538,7 @@
             "slot": "356",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:37"
+            "src": "contracts/MusicNFT.sol:41"
           },
           {
             "label": "_tracksPerAlbum",
@@ -546,7 +546,7 @@
             "slot": "357",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:38"
+            "src": "contracts/MusicNFT.sol:42"
           },
           {
             "label": "_maxAlbumsPerTx",
@@ -554,7 +554,7 @@
             "slot": "358",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:39"
+            "src": "contracts/MusicNFT.sol:43"
           },
           {
             "label": "_maxPerWallet",
@@ -562,7 +562,7 @@
             "slot": "359",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:40"
+            "src": "contracts/MusicNFT.sol:44"
           },
           {
             "label": "_startIndex",
@@ -570,7 +570,7 @@
             "slot": "360",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:41"
+            "src": "contracts/MusicNFT.sol:45"
           },
           {
             "label": "_price",
@@ -578,7 +578,7 @@
             "slot": "361",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:42"
+            "src": "contracts/MusicNFT.sol:46"
           },
           {
             "label": "_presaleStart",
@@ -586,7 +586,7 @@
             "slot": "362",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:43"
+            "src": "contracts/MusicNFT.sol:47"
           },
           {
             "label": "_presaleEnd",
@@ -594,7 +594,7 @@
             "slot": "363",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:44"
+            "src": "contracts/MusicNFT.sol:48"
           },
           {
             "label": "_mintedTracks",
@@ -602,15 +602,15 @@
             "slot": "364",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:46"
+            "src": "contracts/MusicNFT.sol:50"
           },
           {
             "label": "_avatarNFT",
             "offset": 0,
             "slot": "365",
-            "type": "t_contract(INFT)5532",
+            "type": "t_contract(INFT)6681",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:49"
+            "src": "contracts/MusicNFT.sol:53"
           }
         ],
         "types": {
@@ -646,7 +646,7 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(INFT)5532": {
+          "t_contract(INFT)6681": {
             "label": "contract INFT",
             "numberOfBytes": "20"
           },

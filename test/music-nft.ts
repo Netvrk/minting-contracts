@@ -39,7 +39,7 @@ describe("Music NFT minting contracts test", function () {
     now = await time.latest();
   });
 
-  it("Should deploy avatar and music contract", async function () {
+  it("Should deploy avatar contract", async function () {
     const NFT = await ethers.getContractFactory("NFT");
     nft = (await upgrades.deployProxy(
       NFT,
@@ -50,7 +50,9 @@ describe("Music NFT minting contracts test", function () {
     )) as NFT;
 
     await nft.deployed();
+  });
 
+  it("Should deploy music contract", async function () {
     const MusicNFT = await ethers.getContractFactory("MusicNFT");
     musicNft = (await upgrades.deployProxy(
       MusicNFT,
@@ -115,6 +117,30 @@ describe("Music NFT minting contracts test", function () {
         now + 8600
       )
     ).to.be.revertedWith("PRESALE_START_IN_PAST");
+  });
+
+  it("Shouldn't start presale with zero max per wallet and zero max amount", async function () {
+    const startDate = now + 120;
+    const endDate = now + 86400;
+    await expect(
+      musicNft.startPresale(
+        "0",
+        "3",
+        "10000000000000000000",
+        startDate,
+        endDate
+      )
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS");
+
+    await expect(
+      musicNft.startPresale(
+        "10",
+        "0",
+        "10000000000000000000",
+        startDate,
+        endDate
+      )
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS_PER_WALLET");
   });
 
   it("Should start presale with appropriate duration (1 day)", async function () {
@@ -234,6 +260,20 @@ describe("Music NFT minting contracts test", function () {
     expect((await musicNft.albumsMinted(userAddress)).toString()).to.equal("3");
   });
 
+  it("Shouldn't extend presale in past", async function () {
+    const currentTime = await time.latest();
+    await expect(musicNft.extendPresale(currentTime - 120)).to.be.revertedWith(
+      "PRESALE_ENDS_IN_PAST"
+    );
+  });
+
+  it("Shouldn't extend presale before last end", async function () {
+    const prevPresaleEnd = parseInt((await musicNft.presaleEnd()).toString());
+    await expect(
+      musicNft.extendPresale(prevPresaleEnd - 120)
+    ).to.be.revertedWith("PRESALE_ENDS_BEFORE_LAST_END");
+  });
+
   it("Whitelisted user shouldn't premint if max per wallet is exceeded", async function () {
     const hexProof = tree.getHexProof(keccak256(userAddress));
 
@@ -244,7 +284,7 @@ describe("Music NFT minting contracts test", function () {
     ).to.be.revertedWith("MAX_PER_WALLET_EXCEEDED");
   });
 
-  it("Whitelisted users shouldn't premint if max presale is exceeded", async function () {
+  it("Whitelisted users shouldn't premint if max amount is exceeded", async function () {
     const hexProof2 = tree.getHexProof(keccak256(ownerAddress));
 
     await musicNft.presaleMint(1, hexProof2, {
@@ -259,7 +299,27 @@ describe("Music NFT minting contracts test", function () {
       musicNft.presaleMint(1, hexProof2, {
         value: ethers.utils.parseEther("10"),
       })
-    ).to.be.revertedWith("MAX_PRESALE_EXCEEDED");
+    ).to.be.revertedWith("MAX_AMOUNT_EXCEEDED");
+  });
+
+  it("Shouldn't start public sale with max amount zero or less than in presale", async function () {
+    await expect(
+      musicNft.startSale("0", "6", "10000000000000000000")
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS");
+
+    await expect(
+      musicNft.startSale("5", "6", "10000000000000000000")
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS");
+
+    await expect(
+      musicNft.startSale("4", "6", "10000000000000000000")
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS");
+  });
+
+  it("Shouldn't start public sale with zero max per wallet", async function () {
+    await expect(
+      musicNft.startSale("15", "0", "10000000000000000000")
+    ).to.be.revertedWith("SMALLER_MAX_ALBUMS_PER_WALLET");
   });
 
   it("Should stop presale and start public sale", async function () {
@@ -299,6 +359,37 @@ describe("Music NFT minting contracts test", function () {
       "2"
     );
     expect((await nft.balanceOf(user2Address)).toString()).to.equal("2");
+  });
+
+  it("Uer shouldn't mint if max per wallet is exceeded", async function () {
+    await musicNft.connect(user2).mint(2, {
+      value: ethers.utils.parseEther("20"),
+    });
+
+    await musicNft.connect(user2).mint(2, {
+      value: ethers.utils.parseEther("20"),
+    });
+
+    await expect(
+      musicNft.connect(user2).mint(1, {
+        value: ethers.utils.parseEther("10"),
+      })
+    ).to.be.revertedWith("MAX_PER_WALLET_EXCEEDED");
+  });
+
+  it("Users shouldn't mint if max amount is exceeded", async function () {
+    await musicNft.connect(user).mint(2, {
+      value: ethers.utils.parseEther("20"),
+    });
+    await musicNft.mint(2, {
+      value: ethers.utils.parseEther("20"),
+    });
+
+    await expect(
+      musicNft.connect(user).mint(1, {
+        value: ethers.utils.parseEther("10"),
+      })
+    ).to.be.revertedWith("MAX_AMOUNT_EXCEEDED");
   });
 
   it("User shouldn't mint after the sale is stopped", async function () {

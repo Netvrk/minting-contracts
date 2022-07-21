@@ -57,7 +57,7 @@ contract MusicNFT is
             _maxTracks > 0
                 ? totalSupply().add(_tracksPerAlbum.mul(albums)) <= _maxTracks
                 : true,
-            "MAX_PRESALE_EXCEEDED"
+            "MAX_AMOUNT_EXCEEDED"
         );
         require(
             _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums)) <=
@@ -73,7 +73,7 @@ contract MusicNFT is
             _maxTracks > 0
                 ? totalSupply().add(_tracksPerAlbum.mul(albums)) <= _maxTracks
                 : true,
-            "MAX_SALE_EXCEEDED"
+            "MAX_AMOUNT_EXCEEDED"
         );
         require(
             _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums)) <=
@@ -142,8 +142,8 @@ contract MusicNFT is
     ) external virtual onlyOwner {
         require(presaleStartTime_ < presaleEndTime_, "PRESALE_START_AFTER_END");
         require(presaleStartTime_ > block.timestamp, "PRESALE_START_IN_PAST");
-        require(maxAlbums_ > 0, "MAX_ALBUMS_ZERO");
-        require(maxAlbumsPerWallet_ > 0, "MAX_ALBUMS_PER_WALLET_ZERO");
+        require(maxAlbums_ > 0, "SMALLER_MAX_ALBUMS");
+        require(maxAlbumsPerWallet_ > 0, "SMALLER_MAX_ALBUMS_PER_WALLET");
 
         _maxTracks = maxAlbums_.mul(_tracksPerAlbum);
         _maxPerWallet = maxAlbumsPerWallet_.mul(_tracksPerAlbum);
@@ -167,12 +167,11 @@ contract MusicNFT is
         uint256 maxAlbumsPerWallet_,
         uint256 newPrice_
     ) external virtual onlyOwner {
-        require(maxAlbums_ > 0, "MAX_ALBUMS_ZERO");
         require(
             maxAlbums_.mul(_tracksPerAlbum) > _maxTracks,
             "SMALLER_MAX_ALBUMS"
         );
-        require(maxAlbumsPerWallet_ > 0, "MAX_ALBUMS_PER_WALLET_ZERO");
+        require(maxAlbumsPerWallet_ > 0, "SMALLER_MAX_ALBUMS_PER_WALLET");
 
         _maxTracks = maxAlbums_.mul(_tracksPerAlbum);
         _maxPerWallet = maxAlbumsPerWallet_.mul(_tracksPerAlbum);
