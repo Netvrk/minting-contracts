@@ -114,7 +114,7 @@ contract MusicNFT is
         _saleActive = false;
         _startIndex = 1;
         _tracksPerAlbum = 12;
-        _maxAlbumsPerTx = 5;
+        _maxAlbumsPerTx = 2;
     }
 
     // Set merkle root
@@ -140,7 +140,6 @@ contract MusicNFT is
         uint256 presaleStartTime_,
         uint256 presaleEndTime_
     ) external virtual onlyOwner {
-        require(!_saleActive, "SALE_IS_ACTIVE");
         require(presaleStartTime_ < presaleEndTime_, "PRESALE_START_AFTER_END");
         require(presaleStartTime_ > block.timestamp, "PRESALE_START_IN_PAST");
         require(maxAlbums_ > 0, "MAX_ALBUMS_ZERO");
@@ -327,7 +326,9 @@ contract MusicNFT is
         _startIndex = _startIndex.add(totalMints);
 
         // Mint avatar for user
-        _avatarNFT.mintItem(sender);
+        for (uint256 idx = 0; idx < albums; idx++) {
+            _avatarNFT.mintItem(sender);
+        }
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
