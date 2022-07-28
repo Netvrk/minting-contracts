@@ -39,7 +39,7 @@ describe("Music NFT minting contracts test", function () {
     );
 
     now = await time.latest();
-    tracksPerAlbum = 15;
+    tracksPerAlbum = 13;
     maxAlbumsPerTx = 3;
   });
 

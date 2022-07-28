@@ -82,7 +82,7 @@ contract MusicNFT is
         _presaleActive = false;
         _saleActive = false;
         _startIndex = 1;
-        _tracksPerAlbum = 15;
+        _tracksPerAlbum = 13;
         _maxAlbumsPerTx = 3;
     }
 
