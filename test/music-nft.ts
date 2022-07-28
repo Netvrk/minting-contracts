@@ -20,6 +20,8 @@ describe("Music NFT minting contracts test", function () {
   let whiteListAddresses: string[];
   let tree: MerkleTree;
   let now: number;
+  let tracksPerAlbum: number;
+  let maxAlbumsPerTx: number;
 
   // Get signer
   before(async function () {
@@ -37,6 +39,8 @@ describe("Music NFT minting contracts test", function () {
     );
 
     now = await time.latest();
+    tracksPerAlbum = 15;
+    maxAlbumsPerTx = 3;
   });
 
   it("Should deploy avatar contract", async function () {
@@ -189,13 +193,17 @@ describe("Music NFT minting contracts test", function () {
       value: ethers.utils.parseEther("10"),
     });
 
-    for (let x = 1; x < 25; x++) {
+    for (let x = 1; x <= tracksPerAlbum * 2; x++) {
       expect(await musicNft.ownerOf(x)).to.equal(userAddress);
     }
-    expect((await musicNft.balanceOf(userAddress)).toString()).to.equal("24");
+    expect((await musicNft.balanceOf(userAddress)).toString()).to.equal(
+      (tracksPerAlbum * 2).toString()
+    );
     expect((await musicNft.albumsMinted(userAddress)).toString()).to.equal("2");
     expect((await musicNft.totalAlbumsMinted()).toString()).to.equal("2");
-    expect((await musicNft.totalSupply()).toString()).to.equal("24");
+    expect((await musicNft.totalSupply()).toString()).to.equal(
+      (tracksPerAlbum * 2).toString()
+    );
     expect((await musicNft.totalRevenue()).toString()).to.equal(
       "20000000000000000000"
     );
@@ -345,7 +353,7 @@ describe("Music NFT minting contracts test", function () {
 
   it("Any user should mint in sale", async function () {
     await expect(
-      musicNft.connect(user2).mint(6, {
+      musicNft.connect(user2).mint(maxAlbumsPerTx + 1, {
         value: ethers.utils.parseEther("60"),
       })
     ).to.be.revertedWith("TOO_MANY_ALBUMS");
@@ -354,7 +362,9 @@ describe("Music NFT minting contracts test", function () {
       value: ethers.utils.parseEther("20"),
     });
 
-    expect((await musicNft.balanceOf(user2Address)).toString()).to.equal("24");
+    expect((await musicNft.balanceOf(user2Address)).toString()).to.equal(
+      (2 * tracksPerAlbum).toString()
+    );
     expect((await musicNft.albumsMinted(user2Address)).toString()).to.equal(
       "2"
     );

@@ -3,7 +3,6 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol";
@@ -27,7 +26,6 @@ contract MusicNFT is
     ERC721EnumerableUpgradeable
 {
     using AddressUpgradeable for address;
-    using SafeMathUpgradeable for uint256;
     using MerkleProofUpgradeable for bytes32[];
 
     address internal _treasury;
@@ -84,8 +82,8 @@ contract MusicNFT is
         _presaleActive = false;
         _saleActive = false;
         _startIndex = 1;
-        _tracksPerAlbum = 12;
-        _maxAlbumsPerTx = 2;
+        _tracksPerAlbum = 15;
+        _maxAlbumsPerTx = 3;
     }
 
     // Set merkle root
@@ -122,11 +120,14 @@ contract MusicNFT is
     ) external virtual onlyOwner {
         require(presaleStartTime_ < presaleEndTime_, "PRESALE_START_AFTER_END");
         require(presaleStartTime_ > block.timestamp, "PRESALE_START_IN_PAST");
-        require(maxAlbums_ > 0, "SMALLER_MAX_ALBUMS");
+        require(
+            (maxAlbums_ * _tracksPerAlbum) > _maxTracks,
+            "SMALLER_MAX_ALBUMS"
+        );
         require(maxAlbumsPerWallet_ > 0, "SMALLER_MAX_ALBUMS_PER_WALLET");
 
-        _maxTracks = maxAlbums_.mul(_tracksPerAlbum);
-        _maxPerWallet = maxAlbumsPerWallet_.mul(_tracksPerAlbum);
+        _maxTracks = maxAlbums_ * _tracksPerAlbum;
+        _maxPerWallet = maxAlbumsPerWallet_ * _tracksPerAlbum;
         _price = newPrice_;
         _presaleStart = presaleStartTime_;
         _presaleEnd = presaleEndTime_;
@@ -148,13 +149,13 @@ contract MusicNFT is
         uint256 newPrice_
     ) external virtual onlyOwner {
         require(
-            maxAlbums_.mul(_tracksPerAlbum) > _maxTracks,
+            (maxAlbums_ * _tracksPerAlbum) > _maxTracks,
             "SMALLER_MAX_ALBUMS"
         );
         require(maxAlbumsPerWallet_ > 0, "SMALLER_MAX_ALBUMS_PER_WALLET");
 
-        _maxTracks = maxAlbums_.mul(_tracksPerAlbum);
-        _maxPerWallet = maxAlbumsPerWallet_.mul(_tracksPerAlbum);
+        _maxTracks = maxAlbums_ * _tracksPerAlbum;
+        _maxPerWallet = maxAlbumsPerWallet_ * _tracksPerAlbum;
         _price = newPrice_;
         _presaleActive = false;
         _saleActive = true;
@@ -190,12 +191,12 @@ contract MusicNFT is
         require(block.timestamp < _presaleEnd, "PRESALE_ENDED");
         require(
             _maxTracks > 0
-                ? totalSupply().add(_tracksPerAlbum.mul(albums_)) <= _maxTracks
+                ? totalSupply() + (_tracksPerAlbum * albums_) <= _maxTracks
                 : true,
             "MAX_AMOUNT_EXCEEDED"
         );
         require(
-            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums_)) <=
+            _mintedTracks[_msgSender()] + (_tracksPerAlbum * albums_) <=
                 _maxPerWallet,
             "MAX_PER_WALLET_EXCEEDED"
         );
@@ -215,12 +216,12 @@ contract MusicNFT is
         require(_saleActive, "SALE_NOT_ACTIVE");
         require(
             _maxTracks > 0
-                ? totalSupply().add(_tracksPerAlbum.mul(albums_)) <= _maxTracks
+                ? totalSupply() + (_tracksPerAlbum * albums_) <= _maxTracks
                 : true,
             "MAX_AMOUNT_EXCEEDED"
         );
         require(
-            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums_)) <=
+            _mintedTracks[_msgSender()] + (_tracksPerAlbum * albums_) <=
                 _maxPerWallet,
             "MAX_PER_WALLET_EXCEEDED"
         );
@@ -242,11 +243,11 @@ contract MusicNFT is
     }
 
     function maxAlbumsOnSale() external view virtual returns (uint256) {
-        return _maxTracks.div(_tracksPerAlbum);
+        return _maxTracks / _tracksPerAlbum;
     }
 
     function maxAlbumsPerWallet() external view virtual returns (uint256) {
-        return _maxPerWallet.div(_tracksPerAlbum);
+        return _maxPerWallet / _tracksPerAlbum;
     }
 
     function maxAlbumsPerTx() external view virtual returns (uint256) {
@@ -291,11 +292,11 @@ contract MusicNFT is
         virtual
         returns (uint256)
     {
-        return _mintedTracks[user].div(_tracksPerAlbum);
+        return _mintedTracks[user] / _tracksPerAlbum;
     }
 
     function totalAlbumsMinted() public view returns (uint256) {
-        return _startIndex.div(_tracksPerAlbum);
+        return _startIndex / _tracksPerAlbum;
     }
 
     function treasury() external view virtual returns (address) {
@@ -314,17 +315,17 @@ contract MusicNFT is
 
     function _mintAlbum(address sender, uint256 albums) internal {
         require(albums <= _maxAlbumsPerTx, "TOO_MANY_ALBUMS");
-        require(_price.mul(albums) <= msg.value, "LOW_PRICE");
-        uint256 totalMints = albums.mul(_tracksPerAlbum);
+        require(_price * albums <= msg.value, "LOW_PRICE");
+        uint256 totalMints = albums * _tracksPerAlbum;
 
         for (uint256 idx = _startIndex; idx < _startIndex + totalMints; idx++) {
             _safeMint(sender, idx);
             emit Minted(idx, sender);
         }
 
-        _totalRevenue = _totalRevenue.add(msg.value);
-        _mintedTracks[sender] = _mintedTracks[sender].add(totalMints);
-        _startIndex = _startIndex.add(totalMints);
+        _totalRevenue = _totalRevenue + msg.value;
+        _mintedTracks[sender] = _mintedTracks[sender] + totalMints;
+        _startIndex = _startIndex + totalMints;
 
         // Mint avatar for user
         for (uint256 idx = 0; idx < albums; idx++) {
