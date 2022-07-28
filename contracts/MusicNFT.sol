@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
@@ -7,17 +7,22 @@ import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "./interfaces/IMusicNFT.sol";
 import "./interfaces/INFT.sol";
 
 contract MusicNFT is
     IMusicNFT,
+    ERC2981,
     ContextUpgradeable,
     OwnableUpgradeable,
+    ReentrancyGuardUpgradeable,
     UUPSUpgradeable,
     ERC721EnumerableUpgradeable
 {
@@ -48,41 +53,6 @@ contract MusicNFT is
     // Avatar NFT
     INFT private _avatarNFT;
 
-    modifier onlyPresaleMintable(uint256 albums) {
-        require(_merkleRoot != "", "MERKLE_ROOT_NOT_SET");
-        require(_presaleActive, "PRESALE_NOT_ACTIVE");
-        require(_presaleStart < block.timestamp, "PRESALE_NOT_STARTED");
-        require(block.timestamp < _presaleEnd, "PRESALE_ENDED");
-        require(
-            _maxTracks > 0
-                ? totalSupply().add(_tracksPerAlbum.mul(albums)) <= _maxTracks
-                : true,
-            "MAX_AMOUNT_EXCEEDED"
-        );
-        require(
-            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums)) <=
-                _maxPerWallet,
-            "MAX_PER_WALLET_EXCEEDED"
-        );
-        _;
-    }
-
-    modifier onlySaleMintable(uint256 albums) {
-        require(_saleActive, "SALE_NOT_ACTIVE");
-        require(
-            _maxTracks > 0
-                ? totalSupply().add(_tracksPerAlbum.mul(albums)) <= _maxTracks
-                : true,
-            "MAX_AMOUNT_EXCEEDED"
-        );
-        require(
-            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums)) <=
-                _maxPerWallet,
-            "MAX_PER_WALLET_EXCEEDED"
-        );
-        _;
-    }
-
     /**
     ////////////////////////////////////////////////////
     // Admin Functions 
@@ -105,6 +75,7 @@ contract MusicNFT is
         __ERC721Enumerable_init();
         __UUPSUpgradeable_init();
         __Context_init_unchained();
+        __ReentrancyGuard_init_unchained();
         __Ownable_init_unchained();
 
         _tokenBaseURI = baseURI_;
@@ -130,6 +101,15 @@ contract MusicNFT is
     // Set NFT base URI
     function setBaseURI(string memory newBaseURI_) external virtual onlyOwner {
         _tokenBaseURI = newBaseURI_;
+    }
+
+    // Set default royalty
+    function setDefaultRoyalty(address receiver, uint96 royalty)
+        external
+        virtual
+        onlyOwner
+    {
+        _setDefaultRoyalty(receiver, royalty);
     }
 
     // Start presale
@@ -185,7 +165,7 @@ contract MusicNFT is
     }
 
     // withdraw all incomes
-    function withdraw() external virtual {
+    function withdraw() external virtual nonReentrant {
         require(address(this).balance > 0, "ZERO_BALANCE");
         uint256 balance = address(this).balance;
         AddressUpgradeable.sendValue(payable(_treasury), balance);
@@ -202,8 +182,23 @@ contract MusicNFT is
         external
         payable
         virtual
-        onlyPresaleMintable(albums_)
+        nonReentrant
     {
+        require(_merkleRoot != "", "MERKLE_ROOT_NOT_SET");
+        require(_presaleActive, "PRESALE_NOT_ACTIVE");
+        require(_presaleStart < block.timestamp, "PRESALE_NOT_STARTED");
+        require(block.timestamp < _presaleEnd, "PRESALE_ENDED");
+        require(
+            _maxTracks > 0
+                ? totalSupply().add(_tracksPerAlbum.mul(albums_)) <= _maxTracks
+                : true,
+            "MAX_AMOUNT_EXCEEDED"
+        );
+        require(
+            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums_)) <=
+                _maxPerWallet,
+            "MAX_PER_WALLET_EXCEEDED"
+        );
         require(
             MerkleProofUpgradeable.verify(
                 proof_,
@@ -216,12 +211,19 @@ contract MusicNFT is
     }
 
     // mint album in sale
-    function mint(uint256 albums_)
-        external
-        payable
-        virtual
-        onlySaleMintable(albums_)
-    {
+    function mint(uint256 albums_) external payable virtual nonReentrant {
+        require(_saleActive, "SALE_NOT_ACTIVE");
+        require(
+            _maxTracks > 0
+                ? totalSupply().add(_tracksPerAlbum.mul(albums_)) <= _maxTracks
+                : true,
+            "MAX_AMOUNT_EXCEEDED"
+        );
+        require(
+            _mintedTracks[_msgSender()].add(_tracksPerAlbum.mul(albums_)) <=
+                _maxPerWallet,
+            "MAX_PER_WALLET_EXCEEDED"
+        );
         _mintAlbum(_msgSender(), albums_);
     }
 
@@ -334,6 +336,11 @@ contract MusicNFT is
         return _tokenBaseURI;
     }
 
+    function _burn(uint256 tokenId) internal virtual override {
+        super._burn(tokenId);
+        _resetTokenRoyalty(tokenId);
+    }
+
     /**
     ////////////////////////////////////////////////////
     // Override Functions 
@@ -344,12 +351,16 @@ contract MusicNFT is
         public
         view
         virtual
-        override(IERC165, ERC721EnumerableUpgradeable)
+        override(IERC165, ERC2981, ERC721EnumerableUpgradeable)
         returns (bool)
     {
-        return
-            interfaceId == type(IMusicNFT).interfaceId ||
-            super.supportsInterface(interfaceId);
+        if (interfaceId == type(IERC2981).interfaceId) {
+            return true;
+        }
+        if (interfaceId == type(IMusicNFT).interfaceId) {
+            return true;
+        }
+        return super.supportsInterface(interfaceId);
     }
 
     function transferOwnership(address newOwner)

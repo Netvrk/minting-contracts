@@ -15,7 +15,7 @@ dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.11",
+    version: "0.8.15",
     settings: {
       optimizer: {
         enabled: true,
@@ -26,6 +26,23 @@ const config: HardhatUserConfig = {
   networks: {
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY_1 !== undefined &&
+        process.env.PRIVATE_KEY_2 !== undefined
+          ? [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2]
+          : [],
+    },
+    rinkeby: {
+      url: process.env.RINKEBY_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY_1 !== undefined &&
+        process.env.PRIVATE_KEY_2 !== undefined
+          ? [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2]
+          : [],
+    },
+    matic: {
+      chainId: 137,
+      url: process.env.MATIC_URL || "",
       accounts:
         process.env.PRIVATE_KEY_1 !== undefined &&
         process.env.PRIVATE_KEY_2 !== undefined

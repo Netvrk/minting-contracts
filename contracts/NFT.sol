@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
@@ -7,10 +7,13 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "./interfaces/INFT.sol";
 
 contract NFT is
     INFT,
+    ERC2981,
     UUPSUpgradeable,
     ERC721EnumerableUpgradeable,
     AccessControlUpgradeable,
@@ -60,6 +63,15 @@ contract NFT is
         _baseTokenURI = baseTokenURI;
     }
 
+    // Set default royalty
+    function setDefaultRoyalty(address receiver, uint96 royalty)
+        external
+        virtual
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _setDefaultRoyalty(receiver, royalty);
+    }
+
     // Get base URI
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
@@ -69,12 +81,21 @@ contract NFT is
         public
         view
         virtual
-        override(IERC165, ERC721EnumerableUpgradeable, AccessControlUpgradeable)
+        override(
+            IERC165,
+            ERC2981,
+            ERC721EnumerableUpgradeable,
+            AccessControlUpgradeable
+        )
         returns (bool)
     {
-        return
-            interfaceId == type(INFT).interfaceId ||
-            super.supportsInterface(interfaceId);
+        if (interfaceId == type(IERC2981).interfaceId) {
+            return true;
+        }
+        if (interfaceId == type(INFT).interfaceId) {
+            return true;
+        }
+        return super.supportsInterface(interfaceId);
     }
 
     // UUPS proxy function
@@ -83,4 +104,9 @@ contract NFT is
         override
         onlyRole(DEFAULT_ADMIN_ROLE)
     {}
+
+    function _burn(uint256 tokenId) internal virtual override {
+        super._burn(tokenId);
+        _resetTokenRoyalty(tokenId);
+    }
 }
