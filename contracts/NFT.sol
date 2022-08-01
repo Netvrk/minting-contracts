@@ -25,6 +25,7 @@ contract NFT is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     string internal _baseTokenURI;
+    string private _contractURI;
 
     function initialize(
         string memory name,
@@ -72,6 +73,11 @@ contract NFT is
         _setDefaultRoyalty(receiver, royalty);
     }
 
+    // Set Contract URI
+    function contractURI(string memory newContractURI) external virtual onlyOwner {
+        _contractURI = newContractURI;
+    }
+
     // Get base URI
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
@@ -108,5 +114,9 @@ contract NFT is
     function _burn(uint256 tokenId) internal virtual override {
         super._burn(tokenId);
         _resetTokenRoyalty(tokenId);
+    }
+
+    function contractURI() external view virtual returns (string) {
+        return _contractURI;
     }
 }

@@ -32,6 +32,7 @@ contract MusicNFT is
     uint256 internal _totalRevenue;
     bytes32 private _merkleRoot;
     string private _tokenBaseURI;
+    string private _contractURI;
 
     bool private _presaleActive;
     bool private _saleActive;
@@ -101,6 +102,11 @@ contract MusicNFT is
         _tokenBaseURI = newBaseURI_;
     }
 
+    // Set Contract URI
+    function setContractURI(string memory newContractURI) external virtual onlyOwner {
+        _contractURI = newContractURI; 
+    }
+    
     // Set presale/sale price (because eth may be high at some point)
     function setPrice(uint256 newPrice_) external virtual onlyOwner {
         _price = newPrice_;
@@ -311,6 +317,12 @@ contract MusicNFT is
     function totalRevenue() external view virtual returns (uint256) {
         return _totalRevenue;
     }
+
+
+    function contractURI() external view virtual returns (string memory) {
+        return _contractURI;
+    }
+
 
     /**
     ////////////////////////////////////////////////////
