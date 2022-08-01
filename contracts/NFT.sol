@@ -74,7 +74,11 @@ contract NFT is
     }
 
     // Set Contract URI
-    function contractURI(string memory newContractURI) external virtual onlyOwner {
+    function setContractURI(string memory newContractURI)
+        external
+        virtual
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _contractURI = newContractURI;
     }
 
@@ -116,7 +120,7 @@ contract NFT is
         _resetTokenRoyalty(tokenId);
     }
 
-    function contractURI() external view virtual returns (string) {
+    function contractURI() external view virtual returns (string memory) {
         return _contractURI;
     }
 }

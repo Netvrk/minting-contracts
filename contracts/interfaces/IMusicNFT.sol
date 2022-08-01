@@ -21,6 +21,8 @@ interface IMusicNFT is IERC165 {
     // Set NFT base URI
     function setBaseURI(string memory newBaseURI_) external;
 
+    function setContractURI(string memory newContractURI) external;
+
     // Start presale
     function startPresale(
         uint256 maxAlbums_,
@@ -94,4 +96,6 @@ interface IMusicNFT is IERC165 {
     function treasury() external view returns (address);
 
     function totalRevenue() external view returns (uint256);
+
+    function contractURI() external view returns (string memory);
 }

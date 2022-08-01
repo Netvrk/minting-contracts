@@ -9,4 +9,10 @@ interface INFT is IERC165 {
 
     // Set base URI
     function setBaseURI(string memory baseTokenURI) external;
+
+    // Set Contract URI
+    function setContractURI(string memory newContractURI) external;
+
+    // Get Contract URI
+    function contractURI() external view returns (string memory);
 }
