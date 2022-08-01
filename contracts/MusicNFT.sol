@@ -101,6 +101,11 @@ contract MusicNFT is
         _tokenBaseURI = newBaseURI_;
     }
 
+    // Set presale/sale price (because eth may be high at some point)
+    function setPrice(uint256 newPrice_) external virtual onlyOwner {
+        _price = newPrice_;
+    }
+
     // Set default royalty
     function setDefaultRoyalty(address receiver, uint96 royalty)
         external
