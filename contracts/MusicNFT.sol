@@ -103,8 +103,13 @@ contract MusicNFT is
     }
 
     // Set Contract URI
-    function contractURI(string memory newContractURI) external virtual onlyOwner {
-        _contractURI = newContractURI;
+    function setContractURI(string memory newContractURI) external virtual onlyOwner {
+        _contractURI = newContractURI; 
+    }
+    
+    // Set presale/sale price (because eth may be high at some point)
+    function setPrice(uint256 newPrice_) external virtual onlyOwner {
+        _price = newPrice_;
     }
 
     // Set default royalty
@@ -314,7 +319,7 @@ contract MusicNFT is
     }
 
 
-    function contractURI() external view virtual returns (string) {
+    function contractURI() external view virtual returns (string memory) {
         return _contractURI;
     }
 
