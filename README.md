@@ -1,5 +1,11 @@
 ## DD Smart Contracts
 
+### Contracts deployed to mainnet network
+
+- Payment Splitter: 0x5A9C0914908b44f25b6B513a405d5D120cd23ADC
+- Avatar NFT: 0x44DfAb13eC65288B808A1D09D7Fe30862f18A803
+- Music NFT + Minting: 0x8E39bBD14e2d12D05A949C4375c1A78EC92F42bA
+
 ### Contracts deployed to rinkeby network
 
 - Payment Splitter: 0xaC82A4531bC5C764cb6CE7320B3F38547c6F97cF

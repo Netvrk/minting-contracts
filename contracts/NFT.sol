@@ -40,6 +40,9 @@ contract NFT is
         _baseTokenURI = baseTokenURI;
 
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+
+        // Start indexing from 1
+        _tokenIds.increment();
     }
 
     // Mint item

@@ -6,8 +6,8 @@
 import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  const nftAddress = "0xE992C064F312de5767964476Fbb30E51BFF03233";
-  const treasury = "0x37BA1B843939Cd3D3EF33245A299F92ce3297Bd1";
+  const nftAddress = "0x44DfAb13eC65288B808A1D09D7Fe30862f18A803";
+  const treasury = "0x88d87c6fEFEAEA269823699e0d4F6900B2F2A9E8";
   // We get the contract to deploy
   const MusicNFT = await ethers.getContractFactory("MusicNFT");
   const musicNft = await upgrades.deployProxy(MusicNFT, [

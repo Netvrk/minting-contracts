@@ -83,7 +83,7 @@ contract MusicNFT is
         _presaleActive = false;
         _saleActive = false;
         _startIndex = 1;
-        _tracksPerAlbum = 13;
+        _tracksPerAlbum = 12;
         _maxAlbumsPerTx = 3;
     }
 
@@ -103,10 +103,14 @@ contract MusicNFT is
     }
 
     // Set Contract URI
-    function setContractURI(string memory newContractURI) external virtual onlyOwner {
-        _contractURI = newContractURI; 
+    function setContractURI(string memory newContractURI)
+        external
+        virtual
+        onlyOwner
+    {
+        _contractURI = newContractURI;
     }
-    
+
     // Set presale/sale price (because eth may be high at some point)
     function setPrice(uint256 newPrice_) external virtual onlyOwner {
         _price = newPrice_;
@@ -318,11 +322,9 @@ contract MusicNFT is
         return _totalRevenue;
     }
 
-
     function contractURI() external view virtual returns (string memory) {
         return _contractURI;
     }
-
 
     /**
     ////////////////////////////////////////////////////

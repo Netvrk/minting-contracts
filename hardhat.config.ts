@@ -24,6 +24,13 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    mainnet: {
+      url: process.env.MAINNET_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY_MAIN !== undefined
+          ? [process.env.PRIVATE_KEY_MAIN]
+          : [],
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts:
