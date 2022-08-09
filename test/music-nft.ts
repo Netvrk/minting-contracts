@@ -39,7 +39,7 @@ describe("Music NFT minting contracts test", function () {
     );
 
     now = await time.latest();
-    tracksPerAlbum = 13;
+    tracksPerAlbum = 12;
     maxAlbumsPerTx = 3;
   });
 
@@ -60,13 +60,19 @@ describe("Music NFT minting contracts test", function () {
     const MusicNFT = await ethers.getContractFactory("MusicNFT");
     musicNft = (await upgrades.deployProxy(
       MusicNFT,
-      ["DROP", "DROP", "https://api.example.com/", ownerAddress, nft.address],
+      [
+        "DROP",
+        "DROP",
+        "https://api.example.com/",
+        ownerAddress,
+        nft.address,
+        ownerAddress,
+      ],
       {
         kind: "uups",
       }
     )) as MusicNFT;
     await musicNft.deployed();
-    expect(await musicNft.owner()).to.equal(ownerAddress);
   });
 
   it("Should set minting contract as minter in avatar contract", async function () {

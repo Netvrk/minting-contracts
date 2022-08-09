@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
@@ -20,13 +20,15 @@ contract MusicNFT is
     IMusicNFT,
     ERC2981,
     ContextUpgradeable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     ReentrancyGuardUpgradeable,
     UUPSUpgradeable,
     ERC721EnumerableUpgradeable
 {
     using AddressUpgradeable for address;
     using MerkleProofUpgradeable for bytes32[];
+
+    bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
 
     address internal _treasury;
     uint256 internal _totalRevenue;
@@ -63,7 +65,8 @@ contract MusicNFT is
         string memory symbol_,
         string memory baseURI_,
         address treasury_,
-        INFT avatarNFTAddress_
+        INFT avatarNFTAddress_,
+        address manager
     ) public initializer {
         require(
             avatarNFTAddress_.supportsInterface(type(INFT).interfaceId),
@@ -75,7 +78,10 @@ contract MusicNFT is
         __UUPSUpgradeable_init();
         __Context_init_unchained();
         __ReentrancyGuard_init_unchained();
-        __Ownable_init_unchained();
+        __AccessControl_init_unchained();
+
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(MANAGER_ROLE, manager);
 
         _tokenBaseURI = baseURI_;
         _treasury = treasury_;
@@ -88,17 +94,29 @@ contract MusicNFT is
     }
 
     // Set merkle root
-    function setMerkleRoot(bytes32 merkleRoot_) external virtual onlyOwner {
+    function setMerkleRoot(bytes32 merkleRoot_)
+        external
+        virtual
+        onlyRole(MANAGER_ROLE)
+    {
         _merkleRoot = merkleRoot_;
     }
 
     // Set treasury address
-    function setTreasury(address newTreaasury_) external virtual onlyOwner {
+    function setTreasury(address newTreaasury_)
+        external
+        virtual
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _treasury = newTreaasury_;
     }
 
     // Set NFT base URI
-    function setBaseURI(string memory newBaseURI_) external virtual onlyOwner {
+    function setBaseURI(string memory newBaseURI_)
+        external
+        virtual
+        onlyRole(MANAGER_ROLE)
+    {
         _tokenBaseURI = newBaseURI_;
     }
 
@@ -106,13 +124,17 @@ contract MusicNFT is
     function setContractURI(string memory newContractURI)
         external
         virtual
-        onlyOwner
+        onlyRole(MANAGER_ROLE)
     {
         _contractURI = newContractURI;
     }
 
     // Set presale/sale price (because eth may be high at some point)
-    function setPrice(uint256 newPrice_) external virtual onlyOwner {
+    function setPrice(uint256 newPrice_)
+        external
+        virtual
+        onlyRole(MANAGER_ROLE)
+    {
         _price = newPrice_;
     }
 
@@ -120,7 +142,7 @@ contract MusicNFT is
     function setDefaultRoyalty(address receiver, uint96 royalty)
         external
         virtual
-        onlyOwner
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setDefaultRoyalty(receiver, royalty);
     }
@@ -132,7 +154,7 @@ contract MusicNFT is
         uint256 newPrice_,
         uint256 presaleStartTime_,
         uint256 presaleEndTime_
-    ) external virtual onlyOwner {
+    ) external virtual onlyRole(MANAGER_ROLE) {
         require(presaleStartTime_ < presaleEndTime_, "PRESALE_START_AFTER_END");
         require(presaleStartTime_ > block.timestamp, "PRESALE_START_IN_PAST");
         require(
@@ -151,7 +173,11 @@ contract MusicNFT is
     }
 
     // extend presale period
-    function extendPresale(uint256 presaleEndTime_) external virtual onlyOwner {
+    function extendPresale(uint256 presaleEndTime_)
+        external
+        virtual
+        onlyRole(MANAGER_ROLE)
+    {
         require(presaleEndTime_ > block.timestamp, "PRESALE_ENDS_IN_PAST");
         require(presaleEndTime_ > _presaleEnd, "PRESALE_ENDS_BEFORE_LAST_END");
         _presaleEnd = presaleEndTime_;
@@ -162,7 +188,7 @@ contract MusicNFT is
         uint256 maxAlbums_,
         uint256 maxAlbumsPerWallet_,
         uint256 newPrice_
-    ) external virtual onlyOwner {
+    ) external virtual onlyRole(MANAGER_ROLE) {
         require(
             (maxAlbums_ * _tracksPerAlbum) > _maxTracks,
             "SMALLER_MAX_ALBUMS"
@@ -176,7 +202,7 @@ contract MusicNFT is
         _saleActive = true;
     }
 
-    function stopSale() external virtual onlyOwner {
+    function stopSale() external virtual onlyRole(MANAGER_ROLE) {
         _saleActive = false;
     }
 
@@ -371,7 +397,12 @@ contract MusicNFT is
         public
         view
         virtual
-        override(IERC165, ERC2981, ERC721EnumerableUpgradeable)
+        override(
+            IERC165,
+            ERC2981,
+            ERC721EnumerableUpgradeable,
+            AccessControlUpgradeable
+        )
         returns (bool)
     {
         if (interfaceId == type(IERC2981).interfaceId) {
@@ -383,13 +414,6 @@ contract MusicNFT is
         return super.supportsInterface(interfaceId);
     }
 
-    function transferOwnership(address newOwner)
-        public
-        override(OwnableUpgradeable)
-    {
-        return OwnableUpgradeable.transferOwnership(newOwner);
-    }
-
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -399,5 +423,9 @@ contract MusicNFT is
     }
 
     // UUPS proxy function
-    function _authorizeUpgrade(address) internal override onlyOwner {}
+    function _authorizeUpgrade(address)
+        internal
+        override
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {}
 }

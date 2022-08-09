@@ -3,26 +3,26 @@
   "proxies": [
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0xe531a92d803aed0c92718bc6301a08002336ce2b1ab8f8243bed29055b61d6bb",
+      "txHash": "0x20d4b1ec80c529a6656bf0a195506a267e4814ced3f957ddf62203ecb6aa5256",
       "kind": "uups"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xf45d0f21469532b9a7238b7d6804cb7043b60fb4e2126662284da52f76f843c6",
+      "txHash": "0xb3fd8ed745867187cc4a67b2c87740c63fdf9910b73b252d171f7d392a44dc9d",
       "kind": "uups"
     }
   ],
   "impls": {
-    "6b46a6e6cf13d2a4993f1fbcf8dce5faead6a9a27d24d60fab988704fefa57fc": {
+    "be91ec70e25f3ef3e9ae11ace3386e44f4e2ce1102aec4f235ccd98ddcc5e5ac": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0x703b0c90fa020122804d049a05de4a9fec2ed3c8ec193258863cd6acdd03dd60",
+      "txHash": "0xac4ad344eda3815af279200105b02fed77d14331e0178008d356adcae3602b5a",
       "layout": {
         "storage": [
           {
             "label": "_defaultRoyaltyInfo",
             "offset": 0,
             "slot": "0",
-            "type": "t_struct(RoyaltyInfo)4084_storage",
+            "type": "t_struct(RoyaltyInfo)3952_storage",
             "contract": "ERC2981",
             "src": "@openzeppelin/contracts/token/common/ERC2981.sol:30"
           },
@@ -30,7 +30,7 @@
             "label": "_tokenRoyaltyInfo",
             "offset": 0,
             "slot": "1",
-            "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)4084_storage)",
+            "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)",
             "contract": "ERC2981",
             "src": "@openzeppelin/contracts/token/common/ERC2981.sol:31"
           },
@@ -215,7 +215,7 @@
             "label": "_tokenIds",
             "offset": 0,
             "slot": "403",
-            "type": "t_struct(Counter)3139_storage",
+            "type": "t_struct(Counter)3007_storage",
             "contract": "NFT",
             "src": "contracts/NFT.sol:23"
           },
@@ -293,7 +293,7 @@
             "label": "mapping(uint256 => address)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(RoyaltyInfo)4084_storage)": {
+          "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)": {
             "label": "mapping(uint256 => struct ERC2981.RoyaltyInfo)",
             "numberOfBytes": "32"
           },
@@ -305,7 +305,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Counter)3139_storage": {
+          "t_struct(Counter)3007_storage": {
             "label": "struct CountersUpgradeable.Counter",
             "members": [
               {
@@ -335,7 +335,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(RoyaltyInfo)4084_storage": {
+          "t_struct(RoyaltyInfo)3952_storage": {
             "label": "struct ERC2981.RoyaltyInfo",
             "members": [
               {
@@ -368,16 +368,16 @@
         }
       }
     },
-    "66bb3d66a147b49b46dda80b6667dc30b174d7e9c02aa280f4403e4edd681a7a": {
+    "a0b6b91bb69c2a8dd5f2e8c059326d6b4e1a2ab91de3ba8df72be5c7609b122b": {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0xecb4bf4e252b92b5c7aa0c9a0b79d7b34c31ae7bab803962b855181aeb5ac29b",
+      "txHash": "0xb3c6fe2ad30c75216d28f7adcb6cc8504b57e5e48bebf133149bea921dc33242",
       "layout": {
         "storage": [
           {
             "label": "_defaultRoyaltyInfo",
             "offset": 0,
             "slot": "0",
-            "type": "t_struct(RoyaltyInfo)4084_storage",
+            "type": "t_struct(RoyaltyInfo)3952_storage",
             "contract": "ERC2981",
             "src": "@openzeppelin/contracts/token/common/ERC2981.sol:30"
           },
@@ -385,7 +385,7 @@
             "label": "_tokenRoyaltyInfo",
             "offset": 0,
             "slot": "1",
-            "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)4084_storage)",
+            "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)",
             "contract": "ERC2981",
             "src": "@openzeppelin/contracts/token/common/ERC2981.sol:31"
           },
@@ -415,25 +415,33 @@
             "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
           },
           {
-            "label": "_owner",
+            "label": "__gap",
             "offset": 0,
             "slot": "53",
-            "type": "t_address",
-            "contract": "OwnableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:61"
           },
           {
             "label": "__gap",
             "offset": 0,
-            "slot": "54",
+            "slot": "104",
             "type": "t_array(t_uint256)49_storage",
-            "contract": "OwnableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:259"
           },
           {
             "label": "_status",
             "offset": 0,
-            "slot": "103",
+            "slot": "153",
             "type": "t_uint256",
             "contract": "ReentrancyGuardUpgradeable",
             "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
@@ -441,7 +449,7 @@
           {
             "label": "__gap",
             "offset": 0,
-            "slot": "104",
+            "slot": "154",
             "type": "t_array(t_uint256)49_storage",
             "contract": "ReentrancyGuardUpgradeable",
             "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:74"
@@ -449,7 +457,7 @@
           {
             "label": "__gap",
             "offset": 0,
-            "slot": "153",
+            "slot": "203",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ERC1967UpgradeUpgradeable",
             "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
@@ -457,18 +465,10 @@
           {
             "label": "__gap",
             "offset": 0,
-            "slot": "203",
+            "slot": "253",
             "type": "t_array(t_uint256)50_storage",
             "contract": "UUPSUpgradeable",
             "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:107"
-          },
-          {
-            "label": "__gap",
-            "offset": 0,
-            "slot": "253",
-            "type": "t_array(t_uint256)50_storage",
-            "contract": "ERC165Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
           },
           {
             "label": "_name",
@@ -572,7 +572,7 @@
             "slot": "403",
             "type": "t_address",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:31"
+            "src": "contracts/MusicNFT.sol:33"
           },
           {
             "label": "_totalRevenue",
@@ -580,7 +580,7 @@
             "slot": "404",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:32"
+            "src": "contracts/MusicNFT.sol:34"
           },
           {
             "label": "_merkleRoot",
@@ -588,7 +588,7 @@
             "slot": "405",
             "type": "t_bytes32",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:33"
+            "src": "contracts/MusicNFT.sol:35"
           },
           {
             "label": "_tokenBaseURI",
@@ -596,7 +596,7 @@
             "slot": "406",
             "type": "t_string_storage",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:34"
+            "src": "contracts/MusicNFT.sol:36"
           },
           {
             "label": "_contractURI",
@@ -604,7 +604,7 @@
             "slot": "407",
             "type": "t_string_storage",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:35"
+            "src": "contracts/MusicNFT.sol:37"
           },
           {
             "label": "_presaleActive",
@@ -612,7 +612,7 @@
             "slot": "408",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:37"
+            "src": "contracts/MusicNFT.sol:39"
           },
           {
             "label": "_saleActive",
@@ -620,7 +620,7 @@
             "slot": "408",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:38"
+            "src": "contracts/MusicNFT.sol:40"
           },
           {
             "label": "_maxTracks",
@@ -628,7 +628,7 @@
             "slot": "409",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:41"
+            "src": "contracts/MusicNFT.sol:43"
           },
           {
             "label": "_tracksPerAlbum",
@@ -636,7 +636,7 @@
             "slot": "410",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:42"
+            "src": "contracts/MusicNFT.sol:44"
           },
           {
             "label": "_maxAlbumsPerTx",
@@ -644,7 +644,7 @@
             "slot": "411",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:43"
+            "src": "contracts/MusicNFT.sol:45"
           },
           {
             "label": "_maxPerWallet",
@@ -652,7 +652,7 @@
             "slot": "412",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:44"
+            "src": "contracts/MusicNFT.sol:46"
           },
           {
             "label": "_startIndex",
@@ -660,7 +660,7 @@
             "slot": "413",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:45"
+            "src": "contracts/MusicNFT.sol:47"
           },
           {
             "label": "_price",
@@ -668,7 +668,7 @@
             "slot": "414",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:46"
+            "src": "contracts/MusicNFT.sol:48"
           },
           {
             "label": "_presaleStart",
@@ -676,7 +676,7 @@
             "slot": "415",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:47"
+            "src": "contracts/MusicNFT.sol:49"
           },
           {
             "label": "_presaleEnd",
@@ -684,7 +684,7 @@
             "slot": "416",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:48"
+            "src": "contracts/MusicNFT.sol:50"
           },
           {
             "label": "_mintedTracks",
@@ -692,15 +692,15 @@
             "slot": "417",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:50"
+            "src": "contracts/MusicNFT.sol:52"
           },
           {
             "label": "_avatarNFT",
             "offset": 0,
             "slot": "418",
-            "type": "t_contract(INFT)5667",
+            "type": "t_contract(INFT)5557",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:53"
+            "src": "contracts/MusicNFT.sol:55"
           }
         ],
         "types": {
@@ -736,7 +736,7 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(INFT)5667": {
+          "t_contract(INFT)5557": {
             "label": "contract INFT",
             "numberOfBytes": "20"
           },
@@ -756,11 +756,15 @@
             "label": "mapping(address => uint256)",
             "numberOfBytes": "32"
           },
+          "t_mapping(t_bytes32,t_struct(RoleData)34_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
           "t_mapping(t_uint256,t_address)": {
             "label": "mapping(uint256 => address)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(RoyaltyInfo)4084_storage)": {
+          "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)": {
             "label": "mapping(uint256 => struct ERC2981.RoyaltyInfo)",
             "numberOfBytes": "32"
           },
@@ -772,7 +776,25 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(RoyaltyInfo)4084_storage": {
+          "t_struct(RoleData)34_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(RoyaltyInfo)3952_storage": {
             "label": "struct ERC2981.RoyaltyInfo",
             "members": [
               {
