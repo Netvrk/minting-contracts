@@ -11,6 +11,7 @@
 - Payment Splitter: 0xaC82A4531bC5C764cb6CE7320B3F38547c6F97cF
 - Avatar NFT: 0x8aedef6f376078ad4ec9815820c3c887d99e9dbc
 - Music NFT + Minting: 0x1d424fD6d3bf4A232FBb576A03A5a6FAa2648c4e
+- Staking: 0xA0B6C31aE2326486884d5BA6BB8E6895991c9496
 
 ### Contracts deployed to ropsten network
 
