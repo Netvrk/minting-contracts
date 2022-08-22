@@ -249,6 +249,7 @@ contract MusicNFT is
             ),
             "NOT_WHITELISTED"
         );
+
         _mintAlbum(_msgSender(), albums_);
     }
 
@@ -360,7 +361,7 @@ contract MusicNFT is
 
     function _mintAlbum(address sender, uint256 albums) internal {
         require(albums <= _maxAlbumsPerTx, "TOO_MANY_ALBUMS");
-        require(_price * albums <= msg.value, "LOW_PRICE");
+        require(_price * albums == msg.value, "PRICE_MISMATCH");
         uint256 totalMints = albums * _tracksPerAlbum;
 
         for (uint256 idx = _startIndex; idx < _startIndex + totalMints; idx++) {

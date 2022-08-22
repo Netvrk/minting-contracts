@@ -240,7 +240,13 @@ describe("Music NFT minting contracts test", function () {
       musicNft.presaleMint(1, hexProof, {
         value: ethers.utils.parseEther("9"),
       })
-    ).to.be.revertedWith("LOW_PRICE");
+    ).to.be.revertedWith("PRICE_MISMATCH");
+
+    await expect(
+      musicNft.presaleMint(1, hexProof, {
+        value: ethers.utils.parseEther("11"),
+      })
+    ).to.be.revertedWith("PRICE_MISMATCH");
   });
 
   it("Whitelisted user shouldn't mint after presale end time", async function () {
