@@ -6,16 +6,18 @@
 import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  const nftAddress = "0x44DfAb13eC65288B808A1D09D7Fe30862f18A803";
-  const treasury = "0x88d87c6fEFEAEA269823699e0d4F6900B2F2A9E8";
+  const nftAddress = "0xe88A781C82d3Eb8b1C1A98C270f2826B8bcc5DBb";
+  const treasury = "0xC88E18F8bc3f6F4CbA55e14439780563039ED4d5";
+  const manager = "0x08c3405ba60f9263Ec18d20959D1c39F9dff4b4b";
   // We get the contract to deploy
   const MusicNFT = await ethers.getContractFactory("MusicNFT");
   const musicNft = await upgrades.deployProxy(MusicNFT, [
     "MUSIC",
     "MUSIC",
-    "https://api.example.com/",
+    "https://api.netvrk.co/api/damon-dash/",
     treasury,
     nftAddress,
+    manager,
   ]);
 
   await musicNft.deployed();

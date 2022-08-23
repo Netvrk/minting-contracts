@@ -31,29 +31,26 @@ const config: HardhatUserConfig = {
           ? [process.env.PRIVATE_KEY_MAIN]
           : [],
     },
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    goerli: {
+      url: process.env.GOERLI_URL || "",
       accounts:
-        process.env.PRIVATE_KEY_1 !== undefined &&
-        process.env.PRIVATE_KEY_2 !== undefined
-          ? [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2]
+        process.env.PRIVATE_KEY_MAIN !== undefined
+          ? [process.env.PRIVATE_KEY_MAIN]
           : [],
     },
     rinkeby: {
       url: process.env.RINKEBY_URL || "",
       accounts:
-        process.env.PRIVATE_KEY_1 !== undefined &&
-        process.env.PRIVATE_KEY_2 !== undefined
-          ? [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2]
+        process.env.PRIVATE_KEY_MAIN !== undefined
+          ? [process.env.PRIVATE_KEY_MAIN]
           : [],
     },
     matic: {
       chainId: 137,
       url: process.env.MATIC_URL || "",
       accounts:
-        process.env.PRIVATE_KEY_1 !== undefined &&
-        process.env.PRIVATE_KEY_2 !== undefined
-          ? [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2]
+        process.env.PRIVATE_KEY_MAIN !== undefined
+          ? [process.env.PRIVATE_KEY_MAIN]
           : [],
     },
   },

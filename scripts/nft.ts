@@ -10,7 +10,7 @@ async function main() {
   const NFT = await ethers.getContractFactory("NFT");
   const nft = await upgrades.deployProxy(
     NFT,
-    ["AVTR", "AVTR", "https://api.example.com/"],
+    ["AVTR", "AVTR", "https://api.netvrk.co/api/damon-dash/avatar/"],
     {
       kind: "uups",
     }
