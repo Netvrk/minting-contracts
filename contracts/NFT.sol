@@ -11,6 +11,12 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "./interfaces/INFT.sol";
 
+/**
+ * @title NFT
+ * @dev This contract implements an upgradeable ERC721 token with enumerable, pausable, and access control features.
+ * It also supports ERC2981 for royalty management and UUPS proxy for upgradeability.
+ * The contract allows minting of new tokens by users with the MINTER_ROLE and setting base URI, contract URI, and default royalty by users with the DEFAULT_ADMIN_ROLE.
+ */
 contract NFT is
     INFT,
     ERC2981,
@@ -27,6 +33,13 @@ contract NFT is
     string internal _baseTokenURI;
     string private _contractURI;
 
+    /**
+     * @dev Initializes the contract with the given name, symbol, and base token URI.
+     * Grants the deployer the default admin role.
+     * @param name The name of the token.
+     * @param symbol The symbol of the token.
+     * @param baseTokenURI The base URI for the token metadata.
+     */
     function initialize(
         string memory name,
         string memory symbol,
@@ -45,52 +58,72 @@ contract NFT is
         _tokenIds.increment();
     }
 
-    // Mint item
-    function mintItem(address user)
-        external
-        virtual
-        onlyRole(MINTER_ROLE)
-        returns (uint256)
-    {
+    /**
+     * @dev Mints a new token to the specified user.
+     * Can only be called by users with the MINTER_ROLE.
+     * @param user The address of the user to mint the token to.
+     * @return The ID of the newly minted token.
+     */
+    function mintItem(
+        address user
+    ) external virtual onlyRole(MINTER_ROLE) returns (uint256) {
         uint256 newItemId = _tokenIds.current();
         _mint(user, newItemId);
         _tokenIds.increment();
         return newItemId;
     }
 
-    // Set base URI
-    function setBaseURI(string memory baseTokenURI)
-        external
-        virtual
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    /**
+     * @dev Sets the base URI for the token metadata.
+     * Can only be called by users with the DEFAULT_ADMIN_ROLE.
+     * @param baseTokenURI The new base URI.
+     */
+    function setBaseURI(
+        string memory baseTokenURI
+    ) external virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         _baseTokenURI = baseTokenURI;
     }
 
-    // Set default royalty
-    function setDefaultRoyalty(address receiver, uint96 royalty)
-        external
-        virtual
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    /**
+     * @dev Sets the default royalty information.
+     * Can only be called by users with the DEFAULT_ADMIN_ROLE.
+     * @param receiver The address of the royalty receiver.
+     * @param royalty The royalty percentage (in basis points).
+     */
+    function setDefaultRoyalty(
+        address receiver,
+        uint96 royalty
+    ) external virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(receiver, royalty);
     }
 
-    // Set Contract URI
-    function setContractURI(string memory newContractURI)
-        external
-        virtual
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    /**
+     * @dev Sets the contract URI.
+     * Can only be called by users with the DEFAULT_ADMIN_ROLE.
+     * @param newContractURI The new contract URI.
+     */
+    function setContractURI(
+        string memory newContractURI
+    ) external virtual onlyRole(DEFAULT_ADMIN_ROLE) {
         _contractURI = newContractURI;
     }
 
-    // Get base URI
+    /**
+     * @dev Returns the base URI for the token metadata.
+     * @return The base URI.
+     */
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    /**
+     * @dev Checks if the contract supports a given interface.
+     * @param interfaceId The interface identifier.
+     * @return True if the interface is supported, false otherwise.
+     */
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         virtual
@@ -111,18 +144,28 @@ contract NFT is
         return super.supportsInterface(interfaceId);
     }
 
-    // UUPS proxy function
-    function _authorizeUpgrade(address)
-        internal
-        override
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {}
+    /**
+     * @dev Authorizes an upgrade to a new implementation.
+     * Can only be called by users with the DEFAULT_ADMIN_ROLE.
+     * @param newImplementation The address of the new implementation.
+     */
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
 
+    /**
+     * @dev Burns a token and resets its royalty information.
+     * @param tokenId The ID of the token to burn.
+     */
     function _burn(uint256 tokenId) internal virtual override {
         super._burn(tokenId);
         _resetTokenRoyalty(tokenId);
     }
 
+    /**
+     * @dev Returns the contract URI.
+     * @return The contract URI.
+     */
     function contractURI() external view virtual returns (string memory) {
         return _contractURI;
     }

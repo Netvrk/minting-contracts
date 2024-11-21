@@ -3,19 +3,19 @@
   "proxies": [
     {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x20d4b1ec80c529a6656bf0a195506a267e4814ced3f957ddf62203ecb6aa5256",
+      "txHash": "0x69c3c270ba7664c0959604681c2534e6cb2b0248f94056050fc0da8e3f9f3795",
       "kind": "uups"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0xf7d50f92d20a4d8eae7039d3ed021a04557e44ff85bec969f72cce4a7dc59039",
+      "txHash": "0xe7d50decbdfeb0817e947ad72d9b4a5339e4a3a5522f4d429cf1cb7ac6122bb0",
       "kind": "uups"
     }
   ],
   "impls": {
     "be91ec70e25f3ef3e9ae11ace3386e44f4e2ce1102aec4f235ccd98ddcc5e5ac": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0xac4ad344eda3815af279200105b02fed77d14331e0178008d356adcae3602b5a",
+      "txHash": "0x9e4a63a411049deea3e312e87bf39573bfc71f3567cd767b542d85eb20fa74c7",
       "layout": {
         "storage": [
           {
@@ -24,7 +24,7 @@
             "slot": "0",
             "type": "t_struct(RoyaltyInfo)3952_storage",
             "contract": "ERC2981",
-            "src": "@openzeppelin/contracts/token/common/ERC2981.sol:30"
+            "src": "@openzeppelin\\contracts\\token\\common\\ERC2981.sol:30"
           },
           {
             "label": "_tokenRoyaltyInfo",
@@ -32,7 +32,7 @@
             "slot": "1",
             "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)",
             "contract": "ERC2981",
-            "src": "@openzeppelin/contracts/token/common/ERC2981.sol:31"
+            "src": "@openzeppelin\\contracts\\token\\common\\ERC2981.sol:31"
           },
           {
             "label": "_initialized",
@@ -40,7 +40,7 @@
             "slot": "2",
             "type": "t_uint8",
             "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
             "retypedFrom": "bool"
           },
           {
@@ -49,7 +49,7 @@
             "slot": "2",
             "type": "t_bool",
             "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
           },
           {
             "label": "__gap",
@@ -57,7 +57,7 @@
             "slot": "3",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ERC1967UpgradeUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:211"
           },
           {
             "label": "__gap",
@@ -65,7 +65,7 @@
             "slot": "53",
             "type": "t_array(t_uint256)50_storage",
             "contract": "UUPSUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:107"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:107"
           },
           {
             "label": "__gap",
@@ -73,7 +73,7 @@
             "slot": "103",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ContextUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
           },
           {
             "label": "__gap",
@@ -81,7 +81,7 @@
             "slot": "153",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ERC165Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\introspection\\ERC165Upgradeable.sol:41"
           },
           {
             "label": "_name",
@@ -89,7 +89,7 @@
             "slot": "203",
             "type": "t_string_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:25"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:25"
           },
           {
             "label": "_symbol",
@@ -97,7 +97,7 @@
             "slot": "204",
             "type": "t_string_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:28"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:28"
           },
           {
             "label": "_owners",
@@ -105,7 +105,7 @@
             "slot": "205",
             "type": "t_mapping(t_uint256,t_address)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:31"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:31"
           },
           {
             "label": "_balances",
@@ -113,7 +113,7 @@
             "slot": "206",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:34"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:34"
           },
           {
             "label": "_tokenApprovals",
@@ -121,7 +121,7 @@
             "slot": "207",
             "type": "t_mapping(t_uint256,t_address)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:37"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:37"
           },
           {
             "label": "_operatorApprovals",
@@ -129,7 +129,7 @@
             "slot": "208",
             "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:40"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:40"
           },
           {
             "label": "__gap",
@@ -137,7 +137,7 @@
             "slot": "209",
             "type": "t_array(t_uint256)44_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:465"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:465"
           },
           {
             "label": "_ownedTokens",
@@ -145,7 +145,7 @@
             "slot": "253",
             "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:22"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:22"
           },
           {
             "label": "_ownedTokensIndex",
@@ -153,7 +153,7 @@
             "slot": "254",
             "type": "t_mapping(t_uint256,t_uint256)",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:25"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:25"
           },
           {
             "label": "_allTokens",
@@ -161,7 +161,7 @@
             "slot": "255",
             "type": "t_array(t_uint256)dyn_storage",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:28"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:28"
           },
           {
             "label": "_allTokensIndex",
@@ -169,7 +169,7 @@
             "slot": "256",
             "type": "t_mapping(t_uint256,t_uint256)",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:31"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:31"
           },
           {
             "label": "__gap",
@@ -177,7 +177,7 @@
             "slot": "257",
             "type": "t_array(t_uint256)46_storage",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:175"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:175"
           },
           {
             "label": "_roles",
@@ -185,7 +185,7 @@
             "slot": "303",
             "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
             "contract": "AccessControlUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:61"
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61"
           },
           {
             "label": "__gap",
@@ -193,7 +193,7 @@
             "slot": "304",
             "type": "t_array(t_uint256)49_storage",
             "contract": "AccessControlUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:259"
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:259"
           },
           {
             "label": "_paused",
@@ -201,7 +201,7 @@
             "slot": "353",
             "type": "t_bool",
             "contract": "PausableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:29"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:29"
           },
           {
             "label": "__gap",
@@ -209,7 +209,7 @@
             "slot": "354",
             "type": "t_array(t_uint256)49_storage",
             "contract": "PausableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:116"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:116"
           },
           {
             "label": "_tokenIds",
@@ -217,7 +217,7 @@
             "slot": "403",
             "type": "t_struct(Counter)3007_storage",
             "contract": "NFT",
-            "src": "contracts/NFT.sol:23"
+            "src": "contracts\\NFT.sol:29"
           },
           {
             "label": "_baseTokenURI",
@@ -225,7 +225,7 @@
             "slot": "404",
             "type": "t_string_storage",
             "contract": "NFT",
-            "src": "contracts/NFT.sol:27"
+            "src": "contracts\\NFT.sol:33"
           },
           {
             "label": "_contractURI",
@@ -233,7 +233,7 @@
             "slot": "405",
             "type": "t_string_storage",
             "contract": "NFT",
-            "src": "contracts/NFT.sol:28"
+            "src": "contracts\\NFT.sol:34"
           }
         ],
         "types": {
@@ -370,7 +370,7 @@
     },
     "ee9a36fb77e363703aa5308812ba82d834e238c6052e9e47ed3db8daed686148": {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x6498b4f8e85db00d7566600cab8c4a5f953024cedd0c5f97c8da0c1fc7ebef17",
+      "txHash": "0x5cdcb9ae4c799ea68ae98360a6641c2366a89440918f575af19031d9e254b11f",
       "layout": {
         "storage": [
           {
@@ -379,7 +379,7 @@
             "slot": "0",
             "type": "t_struct(RoyaltyInfo)3952_storage",
             "contract": "ERC2981",
-            "src": "@openzeppelin/contracts/token/common/ERC2981.sol:30"
+            "src": "@openzeppelin\\contracts\\token\\common\\ERC2981.sol:30"
           },
           {
             "label": "_tokenRoyaltyInfo",
@@ -387,7 +387,7 @@
             "slot": "1",
             "type": "t_mapping(t_uint256,t_struct(RoyaltyInfo)3952_storage)",
             "contract": "ERC2981",
-            "src": "@openzeppelin/contracts/token/common/ERC2981.sol:31"
+            "src": "@openzeppelin\\contracts\\token\\common\\ERC2981.sol:31"
           },
           {
             "label": "_initialized",
@@ -395,7 +395,7 @@
             "slot": "2",
             "type": "t_uint8",
             "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
             "retypedFrom": "bool"
           },
           {
@@ -404,7 +404,7 @@
             "slot": "2",
             "type": "t_bool",
             "contract": "Initializable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
           },
           {
             "label": "__gap",
@@ -412,7 +412,7 @@
             "slot": "3",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ContextUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
           },
           {
             "label": "__gap",
@@ -420,7 +420,7 @@
             "slot": "53",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ERC165Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\introspection\\ERC165Upgradeable.sol:41"
           },
           {
             "label": "_roles",
@@ -428,7 +428,7 @@
             "slot": "103",
             "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
             "contract": "AccessControlUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:61"
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61"
           },
           {
             "label": "__gap",
@@ -436,7 +436,7 @@
             "slot": "104",
             "type": "t_array(t_uint256)49_storage",
             "contract": "AccessControlUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:259"
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:259"
           },
           {
             "label": "_status",
@@ -444,7 +444,7 @@
             "slot": "153",
             "type": "t_uint256",
             "contract": "ReentrancyGuardUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
           },
           {
             "label": "__gap",
@@ -452,7 +452,7 @@
             "slot": "154",
             "type": "t_array(t_uint256)49_storage",
             "contract": "ReentrancyGuardUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:74"
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:74"
           },
           {
             "label": "__gap",
@@ -460,7 +460,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)50_storage",
             "contract": "ERC1967UpgradeUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:211"
           },
           {
             "label": "__gap",
@@ -468,7 +468,7 @@
             "slot": "253",
             "type": "t_array(t_uint256)50_storage",
             "contract": "UUPSUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:107"
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:107"
           },
           {
             "label": "_name",
@@ -476,7 +476,7 @@
             "slot": "303",
             "type": "t_string_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:25"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:25"
           },
           {
             "label": "_symbol",
@@ -484,7 +484,7 @@
             "slot": "304",
             "type": "t_string_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:28"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:28"
           },
           {
             "label": "_owners",
@@ -492,7 +492,7 @@
             "slot": "305",
             "type": "t_mapping(t_uint256,t_address)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:31"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:31"
           },
           {
             "label": "_balances",
@@ -500,7 +500,7 @@
             "slot": "306",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:34"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:34"
           },
           {
             "label": "_tokenApprovals",
@@ -508,7 +508,7 @@
             "slot": "307",
             "type": "t_mapping(t_uint256,t_address)",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:37"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:37"
           },
           {
             "label": "_operatorApprovals",
@@ -516,7 +516,7 @@
             "slot": "308",
             "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:40"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:40"
           },
           {
             "label": "__gap",
@@ -524,7 +524,7 @@
             "slot": "309",
             "type": "t_array(t_uint256)44_storage",
             "contract": "ERC721Upgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol:465"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\ERC721Upgradeable.sol:465"
           },
           {
             "label": "_ownedTokens",
@@ -532,7 +532,7 @@
             "slot": "353",
             "type": "t_mapping(t_address,t_mapping(t_uint256,t_uint256))",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:22"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:22"
           },
           {
             "label": "_ownedTokensIndex",
@@ -540,7 +540,7 @@
             "slot": "354",
             "type": "t_mapping(t_uint256,t_uint256)",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:25"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:25"
           },
           {
             "label": "_allTokens",
@@ -548,7 +548,7 @@
             "slot": "355",
             "type": "t_array(t_uint256)dyn_storage",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:28"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:28"
           },
           {
             "label": "_allTokensIndex",
@@ -556,7 +556,7 @@
             "slot": "356",
             "type": "t_mapping(t_uint256,t_uint256)",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:31"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:31"
           },
           {
             "label": "__gap",
@@ -564,7 +564,7 @@
             "slot": "357",
             "type": "t_array(t_uint256)46_storage",
             "contract": "ERC721EnumerableUpgradeable",
-            "src": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol:175"
+            "src": "@openzeppelin\\contracts-upgradeable\\token\\ERC721\\extensions\\ERC721EnumerableUpgradeable.sol:175"
           },
           {
             "label": "_treasury",
@@ -572,7 +572,7 @@
             "slot": "403",
             "type": "t_address",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:33"
+            "src": "contracts\\MusicNFT.sol:40"
           },
           {
             "label": "_totalRevenue",
@@ -580,7 +580,7 @@
             "slot": "404",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:34"
+            "src": "contracts\\MusicNFT.sol:42"
           },
           {
             "label": "_merkleRoot",
@@ -588,7 +588,7 @@
             "slot": "405",
             "type": "t_bytes32",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:35"
+            "src": "contracts\\MusicNFT.sol:44"
           },
           {
             "label": "_tokenBaseURI",
@@ -596,7 +596,7 @@
             "slot": "406",
             "type": "t_string_storage",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:36"
+            "src": "contracts\\MusicNFT.sol:46"
           },
           {
             "label": "_contractURI",
@@ -604,7 +604,7 @@
             "slot": "407",
             "type": "t_string_storage",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:37"
+            "src": "contracts\\MusicNFT.sol:48"
           },
           {
             "label": "_presaleActive",
@@ -612,7 +612,7 @@
             "slot": "408",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:39"
+            "src": "contracts\\MusicNFT.sol:51"
           },
           {
             "label": "_saleActive",
@@ -620,7 +620,7 @@
             "slot": "408",
             "type": "t_bool",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:40"
+            "src": "contracts\\MusicNFT.sol:52"
           },
           {
             "label": "_maxTracks",
@@ -628,7 +628,7 @@
             "slot": "409",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:43"
+            "src": "contracts\\MusicNFT.sol:55"
           },
           {
             "label": "_tracksPerAlbum",
@@ -636,7 +636,7 @@
             "slot": "410",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:44"
+            "src": "contracts\\MusicNFT.sol:56"
           },
           {
             "label": "_maxAlbumsPerTx",
@@ -644,7 +644,7 @@
             "slot": "411",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:45"
+            "src": "contracts\\MusicNFT.sol:57"
           },
           {
             "label": "_maxPerWallet",
@@ -652,7 +652,7 @@
             "slot": "412",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:46"
+            "src": "contracts\\MusicNFT.sol:58"
           },
           {
             "label": "_startIndex",
@@ -660,7 +660,7 @@
             "slot": "413",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:47"
+            "src": "contracts\\MusicNFT.sol:59"
           },
           {
             "label": "_price",
@@ -668,7 +668,7 @@
             "slot": "414",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:48"
+            "src": "contracts\\MusicNFT.sol:60"
           },
           {
             "label": "_presaleStart",
@@ -676,7 +676,7 @@
             "slot": "415",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:49"
+            "src": "contracts\\MusicNFT.sol:61"
           },
           {
             "label": "_presaleEnd",
@@ -684,7 +684,7 @@
             "slot": "416",
             "type": "t_uint256",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:50"
+            "src": "contracts\\MusicNFT.sol:62"
           },
           {
             "label": "_mintedTracks",
@@ -692,15 +692,15 @@
             "slot": "417",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:52"
+            "src": "contracts\\MusicNFT.sol:65"
           },
           {
             "label": "_avatarNFT",
             "offset": 0,
             "slot": "418",
-            "type": "t_contract(INFT)5557",
+            "type": "t_contract(INFT)5600",
             "contract": "MusicNFT",
-            "src": "contracts/MusicNFT.sol:55"
+            "src": "contracts\\MusicNFT.sol:68"
           }
         ],
         "types": {
@@ -736,7 +736,7 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(INFT)5557": {
+          "t_contract(INFT)5600": {
             "label": "contract INFT",
             "numberOfBytes": "20"
           },

@@ -1,21 +1,81 @@
-## Minting Smart Contracts
+## MusicNFT Project
 
-### DD Contracts deployed to mainnet network (for test)
+### Overview
 
-- Payment Splitter: [0x5A9C0914908b44f25b6B513a405d5D120cd23ADC](https://etherscan.io/address/0x5A9C0914908b44f25b6B513a405d5D120cd23ADC)
-- Avatar NFT: [0x44DfAb13eC65288B808A1D09D7Fe30862f18A803](https://etherscan.io/address/0x44DfAb13eC65288B808A1D09D7Fe30862f18A803)
-- Music NFT + Minting: [0x8E39bBD14e2d12D05A949C4375c1A78EC92F42bA](https://etherscan.io/address/0x8E39bBD14e2d12D05A949C4375c1A78EC92F42bA)
+The MusicNFT project is a smart contract implementation for minting and managing music NFTs (Non-Fungible Tokens) on the Ethereum blockchain. The contract is designed to be upgradeable and includes various features such as presale, sale, royalty management, and access control.
 
-### DD Contracts deployed to goerli network
+### Key Features
 
-- Payment Splitter: [0xC88E18F8bc3f6F4CbA55e14439780563039ED4d5](https://goerli.etherscan.io/address/0xC88E18F8bc3f6F4CbA55e14439780563039ED4d5)
-- Avatar NFT: [0xe88A781C82d3Eb8b1C1A98C270f2826B8bcc5DBb](https://goerli.etherscan.io/address/0xe88A781C82d3Eb8b1C1A98C270f2826B8bcc5DBb)
-- Music NFT + Minting: [0x01c9Fd946DdCFf85c7a7Df763d49DF106D1c0adD](https://goerli.etherscan.io/address/0x01c9Fd946DdCFf85c7a7Df763d49DF106D1c0adD)
-- Staking: [0x5f5a06B8df64D3cef82e4eE4320ce9C21561fdB9](https://goerli.etherscan.io/address/0x5f5a06B8df64D3cef82e4eE4320ce9C21561fdB9)
+1. **Upgradeable Contract**: The contract uses the UUPS (Universal Upgradeable Proxy Standard) pattern to allow for future upgrades without changing the contract address.
 
-### DD Contracts deployed to rinkeby network
+2. **ERC721 Compliance**: The contract implements the ERC721 standard for NFTs, along with the ERC721Enumerable extension for enumerability of tokens.
 
-- Payment Splitter: [0xaC82A4531bC5C764cb6CE7320B3F38547c6F97cF](https://rinkeby.etherscan.io/address/0xaC82A4531bC5C764cb6CE7320B3F38547c6F97cF)
-- Avatar NFT: [0x8aedef6f376078ad4ec9815820c3c887d99e9dbc](https://rinkeby.etherscan.io/address/0x8aedef6f376078ad4ec9815820c3c887d99e9dbc)
-- Music NFT + Minting: [0x1d424fD6d3bf4A232FBb576A03A5a6FAa2648c4e](https://rinkeby.etherscan.io/address/0x1d424fD6d3bf4A232FBb576A03A5a6FAa2648c4e)
-- Staking: [0xA0B6C31aE2326486884d5BA6BB8E6895991c9496](https://rinkeby.etherscan.io/address/0xA0B6C31aE2326486884d5BA6BB8E6895991c9496)
+3. **Access Control**: The contract uses OpenZeppelin's AccessControl to manage roles and permissions. There are roles for administrators and managers.
+
+4. **Presale and Sale**: The contract includes functionalities for managing presale and public sale of NFTs. It uses Merkle Proofs for whitelist verification during the presale.
+
+5. **Royalty Management**: The contract implements the ERC2981 standard for royalty management, allowing creators to earn royalties on secondary sales.
+
+6. **Minting Limits**: The contract enforces limits on the number of albums and tracks that can be minted per transaction and per wallet.
+
+7. **Revenue Management**: The contract includes a treasury address for collecting funds from NFT sales and a function to withdraw the collected funds.
+
+### Contract Details
+
+#### Initialization
+
+The `initialize` function sets up the contract with initial values and roles. It requires the name and symbol for the token, base URI for metadata, treasury address, avatar NFT contract address, and manager address.
+
+#### Admin Functions
+
+- `setMerkleRoot`: Sets the Merkle root for presale whitelist verification.
+- `setTreasury`: Sets the treasury address.
+- `setBaseURI`: Sets the base URI for token metadata.
+- `setContractURI`: Sets the contract URI for contract-level metadata.
+- `setPrice`: Sets the price for presale and sale.
+- `setDefaultRoyalty`: Sets the default royalty for the contract.
+- `startPresale`: Starts the presale with specified parameters.
+- `extendPresale`: Extends the presale period.
+- `startSale`: Starts the public sale with specified parameters.
+- `stopSale`: Stops the public sale.
+- `withdraw`: Withdraws the contract's balance to the treasury.
+
+#### Public Functions
+
+- `presaleMint`: Mints albums during the presale, requiring Merkle proof for whitelist verification.
+- `mint`: Mints albums during the public sale.
+
+#### View Functions
+
+- `tracksPerAlbum`: Returns the number of tracks per album.
+- `maxTracksOnSale`: Returns the maximum number of tracks on sale.
+- `maxAlbumsOnSale`: Returns the maximum number of albums on sale.
+- `maxAlbumsPerWallet`: Returns the maximum number of albums per wallet.
+- `maxAlbumsPerTx`: Returns the maximum number of albums per transaction.
+- `price`: Returns the price per album.
+- `presaleActive`: Returns whether the presale is active.
+- `saleActive`: Returns whether the sale is active.
+- `presaleStart`: Returns the start time of the presale.
+- `presaleEnd`: Returns the end time of the presale.
+- `tracksMinted`: Returns the number of tracks minted by a user.
+- `albumsMinted`: Returns the number of albums minted by a user.
+- `totalAlbumsMinted`: Returns the total number of albums minted.
+- `treasury`: Returns the treasury address.
+- `totalRevenue`: Returns the total revenue generated by the contract.
+- `contractURI`: Returns the contract URI.
+
+### Internal Functions
+
+- `_mintAlbum`: Internal function to mint albums and update relevant state variables.
+- `_baseURI`: Returns the base URI for token metadata.
+- `_burn`: Burns a token and resets its royalty information.
+
+### Override Functions
+
+- `supportsInterface`: Checks if the contract supports a given interface.
+- `_beforeTokenTransfer`: Hook called before any token transfer.
+- `_authorizeUpgrade`: Authorizes an upgrade to the contract.
+
+### Conclusion
+
+The MusicNFT project provides a comprehensive solution for minting and managing music NFTs with features like upgradeability, access control, presale, sale, and royalty management. It leverages OpenZeppelin's libraries for security and standard compliance.
